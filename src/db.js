@@ -6,7 +6,7 @@ class Database {
       user: 'postgres',
       host: 'localhost',
       database: 'BookFinder',
-      password: '1006463424',
+      password: 'Acos306254',
       port: 5432,
     });
   }
