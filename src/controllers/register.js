@@ -72,9 +72,6 @@ async function register (req, res)
   .catch(error => {
     return res.status(400).send({status: 'Usuario no creado', message: 'Fallo al intentar crear usuario'});
   });
-
-  const hola = 1;
-  hola++;
 }
 
 
