@@ -2,9 +2,9 @@ POST http://localhost:4000/register
 Content-Type: application/json
 
 {
-    "username": "dani223",
-    "nombres": "Daniela",
-    "apellidos": "Salazar",
-    "correo": "daniela123@correo.com",
-    "password": "Daniela123-"
+    "username": "Andrea03",
+    "nombres": "Monica Andrea",
+    "apellidos": "Salazar Mosquera",
+    "correo": "Monica23@correo.com",
+    "password": "AndreaS123-"
 }

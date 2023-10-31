@@ -32,14 +32,14 @@ async function register (req, res)
   }
 
   // Valida que el nombre de usuario no empiece por numero o simbolo
-  const expresionRegular = /^[0-9!@#$-_%^'&*]/; // Esta expresión regular verifica si el primer carácter es un número o alguno de los símbolos
-  if (expresionRegular.test(username)) 
+  const expresionRegular = /^[A-Za-z][A-Za-z0-9!@#$-_%^&*]*$/ /// Esta expresión regular verifica si el primer carácter es un número o alguno de los símbolos
+  if (!(expresionRegular.test(username)))
   {
     return res.status(400).send({status: 'username no valido', message: 'El username empieza por un numero o simbolo'});
   }
   
   // Valida que el nombre no contenga numeros ni simbolos
-  const expresionAlfabetica = /^[A-Za-z]+$/;
+  const expresionAlfabetica = /^[A-Za-z ]+$/;
   if (!(expresionAlfabetica.test(nombres)) )
   {
     return res.status(400).send({status: 'nombre no valido', message: 'El nombre contiene numeros o simbolos'});
