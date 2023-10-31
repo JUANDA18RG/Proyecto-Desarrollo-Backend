@@ -1,4 +1,4 @@
-const bcrypt = require('bcryptjs'); // este modulo utiliza hash incorporando saltos (iteraciones) para encriptar la clave
+const bcrypt = require('bcrypt'); // este modulo utiliza hash incorporando saltos (iteraciones) para encriptar la clave
 const fsql = require('./task.controllers.js');
 const db = require('../db.js');
 db.connect();

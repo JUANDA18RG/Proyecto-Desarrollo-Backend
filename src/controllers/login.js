@@ -6,7 +6,6 @@ const fsql = require('../controllers/task.controllers.js');
 
 loginrouter.post('/api/login', async (request, response) => {
     const body = request.body;
-    console.log(body);
     const {correo, password} = body;
     const user = await fsql.getUserByCorreo(correo);
     const passwordCorrect = user === null
@@ -14,7 +13,7 @@ loginrouter.post('/api/login', async (request, response) => {
         : await bcrypt.compare(password, user[0].passwordhash); // compare the password with the passwordHash de la base de datos
 
         if (!(user && passwordCorrect)){
-            response.status(401).json({
+            return response.status(401).json({
                 error: 'Ocurrió un error en la contraseña o correo'
             });
         }
