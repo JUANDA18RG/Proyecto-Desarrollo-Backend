@@ -12,6 +12,4 @@ router.get('/api/books', getallBooks);
 
 router.post('/register', authentication.register);
 
-router.post('/register', authentication.register);
-
 module.exports = router;
