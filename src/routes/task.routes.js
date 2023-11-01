@@ -10,8 +10,6 @@ const loginrouter = require('../controllers/login.js');
 
 router.get('/api/books', getallBooks);
 
-router.post('/api/login', loginrouter);
-
 router.post('/register', authentication.register);
 
 module.exports = router;

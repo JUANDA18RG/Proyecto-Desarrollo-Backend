@@ -22,7 +22,7 @@ loginrouter.post('/api/login', async (request, response) => {
             correo: user[0].correo,
         }
 
-        const token = jwt.sign(userForToken, process.env.SECRET); // firmar el token con un objeto y una palabra secreta
+        const token = jwt.sign(userForToken, process.env.SECRET,{expiresIn: '1h'} ); // firmar el token con un objeto y una palabra secreta
 
 
 

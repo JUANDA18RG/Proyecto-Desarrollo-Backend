@@ -5,7 +5,7 @@ const db = pgp
   user: 'postgres',
   host: 'localhost',
   database: 'BookFinder',
-  password: '12345',
+  password: 'Acos306254',
   port: 5432,
 })
 
