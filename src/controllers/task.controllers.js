@@ -22,8 +22,6 @@ const getallUsername = async (username) =>
 }
 
 
-
-
 const getUserByCorreo = async (correo) => 
 {
     try
