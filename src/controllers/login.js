@@ -9,8 +9,7 @@ loginrouter.post('/api/login', async (request, response) => {
     const {correo, password} = body;
     const user = await fsql.getUserByCorreo(correo);
     const passwordCorrect = user === null
-        ? false
-        : await bcrypt.compare(password, user[0].passwordhash); // compare the password with the passwordHash de la base de datos
+        ? false : await bcrypt.compare(password, user[0].passwordhash); // compare the password with the passwordHash de la base de datos
 
         if (!(user && passwordCorrect)){
             return response.status(401).json({
@@ -23,7 +22,7 @@ loginrouter.post('/api/login', async (request, response) => {
             correo: user[0].correo,
         }
 
-        const token = jwt.sign(userForToken, process.env.SECRET); // firmar el token con un objeto y una palabra secreta
+        const token = jwt.sign(userForToken, process.env.SECRET,{expiresIn: '1h'} ); // firmar el token con un objeto y una palabra secreta
 
 
 

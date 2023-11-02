@@ -15,6 +15,9 @@ app.use(cors({
 app.set('port', 4000 || process.env.PORT);
 
 app.use(express.json());
+app.use(cors({
+  origin: 'http://localhost:5173' // solo permite recibir de esta funcion
+}));
 app.use(router);
 app.use(loginrouter);
 
