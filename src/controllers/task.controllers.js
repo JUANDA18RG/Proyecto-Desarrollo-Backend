@@ -28,6 +28,7 @@ const getUserByCorreo = async (correo) =>
 {
     try
     {
+        
         const user = await db.oneOrNone('SELECT * FROM persona WHERE correo = $1', [correo]);
         if(user)
         {
