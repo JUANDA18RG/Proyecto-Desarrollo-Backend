@@ -16,7 +16,6 @@ loginrouter.post('/api/login', async (request, response) => {
                 error: 'Ocurrió un error en la contraseña o correo'
             });
         }
-
         const userForToken = {
             username: user[0].username,
             correo: user[0].correo,
