@@ -1,9 +1,11 @@
+ 
 const bcrypt = require('bcrypt');
 const db = require('../db.js');
+const jwt = require('jsonwebtoken');
 
 async function updateUserData(req, res) {
-  const username = req.params.username;
   const { nombres, apellidos, password } = req.body;
+  const userId = req.params.username; // Obtén el nombre de usuario desde los parámetros de la ruta
 
   let updateFields = {};
 
@@ -28,16 +30,17 @@ async function updateUserData(req, res) {
     }
     const salt = await bcrypt.genSalt(8);
     const passwordHash = await bcrypt.hash(password, salt);
-    updateFields.passwordhash = passwordHash; // Aquí se actualiza "passwordhash" en lugar de "password"
+    updateFields.passwordhash = passwordHash;
   }
 
   if (Object.keys(updateFields).length === 0) {
     return res.status(400).send({ status: 'Error', message: 'Ningún campo válido proporcionado para actualizar' });
   }
 
+  // Asegúrate de que la actualización solo se aplique al usuario autenticado
   const updateQuery = {
-    text: 'UPDATE persona SET ' + Object.keys(updateFields).map((field, index) => `${field} = $${index + 1}`).join(', ') + ' WHERE username = $' + (Object.keys(updateFields).length + 1),
-    values: [...Object.values(updateFields), username]
+    text: 'UPDATE persona SET ' + Object.keys(updateFields).map((field, index) => `${field} = $${index + 1}`).join(', ') + ' WHERE username = $' + (Object.keys(updateFields).length + 1) + ' AND username = $' + (Object.keys(updateFields).length + 2),
+    values: [...Object.values(updateFields), userId, userId]
   };
 
   db.none(updateQuery)
@@ -49,4 +52,6 @@ async function updateUserData(req, res) {
     });
 }
 
-module.exports.updateUserData = updateUserData;
+module.exports = {
+  updateUserData
+};
