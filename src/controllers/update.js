@@ -23,10 +23,11 @@ async function updateUserData(req, res) {
     updateFields.apellidos = apellidos;
   }
   if (password) {
-    const expresionContraseña = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[@#$%*-^&+=!]).+$/;
+    const expresionContraseña = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[@#$%*-^&+=!]).{8}$/;
+
     //console.log(expresionContraseña.test(password));
     if (!expresionContraseña.test(password)) {
-      return res.status(400).send({ error: 'contraseña no válida' });
+      return res.status(400).send({ error: 'La contraseña debe tener 8 caracteres,contener por lo menos una mayuscula, una minuscula y un caracter especial' });
     }
     const salt = await bcrypt.genSalt(8);
     const passwordHash = await bcrypt.hash(password, salt);
