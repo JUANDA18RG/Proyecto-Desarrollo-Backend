@@ -2,9 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const userExtractor = require('./routes/userExtractor');
-
 const router = require('./routes/task.routes');
-const loginrouter = require('./controllers/login');
 
 const app = express();
 
@@ -19,8 +17,8 @@ app.use(express.json());
 app.use(cors({
   origin: 'http://localhost:5173' // solo permite recibir de esta funcion
 }));
-app.use(router);
-app.use(loginrouter);
+app.use(router.router);
+app.use(router.routerlogin);
 
 
 

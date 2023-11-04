@@ -51,7 +51,7 @@ async function register (req, res)
     return res.status(400).send({status: 'apellido no valido', message: 'Los apellidos contienen numeros o simbolos'});
   }
 
-  // Valida que la contraseña tengo por lo menos una letra mayúscula, una letra minúscula y un carácter especial
+  // Valida que la contraseña tenga por lo menos una letra mayúscula, una letra minúscula y un carácter especial
   const expresionContraseña = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[@#$%*-^&+=!]).+$/;
   if (!(expresionContraseña.test(password)))
   {

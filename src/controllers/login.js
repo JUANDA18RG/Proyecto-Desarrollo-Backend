@@ -5,8 +5,7 @@ const routerPrueba = require('express').Router();
 const jwt = require('jsonwebtoken');
 const fsql = require('../controllers/task.controllers.js');
 
-
-loginrouter.post('/api/login', async (request, response) => {
+const loggin = async (request, response) => {
     const body = request.body;
     const {correo, password} = body;
     const user = await fsql.getUserByCorreo(correo);
@@ -36,6 +35,6 @@ loginrouter.post('/api/login', async (request, response) => {
             token
         });
 
-});
+}
 
-module.exports = loginrouter;
+module.exports.loggin = loggin;
