@@ -18,44 +18,52 @@ async function register (req, res)
   }
 
     //Valida que el username no exista en la base de datos
+
   const userExist = await fsql.getallUsername(username);
+  const correoExist = await fsql.getUserByCorreo(correo);
+  if((!(correoExist === null)) && userExist)
+  {
+    return res.status(400).send({status: 'Correo  y usuario existente', message: 'Ya existe el correo y el nombre de usuario'});
+  }
+  
   if (userExist)
   {
     return res.status(400).send({status: 'Usuario existente', message: 'Ya existe el username'});
   }
 
   //Valida que el correo no exista en la base de datos
-  const correoExist = await fsql.getUserByCorreo(correo);
   if(!(correoExist === null))
   {
     return res.status(400).send({status: 'Correo existente', message: 'Ya existe el correo'});
   }
 
+
+
   // Valida que el nombre de usuario no empiece por numero o simbolo
   const expresionRegular = /^[A-Za-z][A-Za-z0-9!@#$-_%^&*]*$/ /// Esta expresión regular verifica si el primer carácter es un número o alguno de los símbolos
   if (!(expresionRegular.test(username)))
   {
-    return res.status(400).send({status: 'username no valido', message: 'El username empieza por un numero o simbolo'});
+    return res.status(400).send({status: 'Username no valido', message: 'El username empieza por un numero o simbolo'});
   }
   
   // Valida que el nombre no contenga numeros ni simbolos
-  const expresionAlfabetica = /^[A-Za-z ]+$/;
+  const expresionAlfabetica = /^[A-Za-záéíóúñÁÉÍÓÚÑ\s]+$/;
   if (!(expresionAlfabetica.test(nombres)) )
   {
-    return res.status(400).send({status: 'nombre no valido', message: 'El nombre contiene numeros o simbolos'});
+    return res.status(400).send({status: 'Nombre no valido', message: 'El nombre contiene numeros o simbolos'});
   }
 
   // Valida que el nombre no contenga numeros ni simbolos
   if (!(expresionAlfabetica.test(apellidos)))
   {
-    return res.status(400).send({status: 'apellido no valido', message: 'Los apellidos contienen numeros o simbolos'});
+    return res.status(400).send({status: 'Apellido no valido', message: 'Los apellidos contienen numeros o simbolos'});
   }
 
-  // Valida que la contraseña tengo por lo menos una letra mayúscula, una letra minúscula y un carácter especial
-  const expresionContraseña = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[@#$%*-^&+=!]).+$/;
+  // Valida que la contraseña tenga por lo menos una letra mayúscula, una letra minúscula y un carácter especial
+  const expresionContraseña = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[@#$%*-^&_+=!]).{8,}$/;
   if (!(expresionContraseña.test(password)))
   {
-    return res.status(400).send({status: 'contraseña no valida', message: 'La contraseña debe contener por lo menos una mayuscula, una minuscula y un caracter especial'});
+    return res.status(400).send({status: 'contraseña no valida'});
   } 
   
   // Encriptacion de la contraseña con bcrypt
