@@ -1,7 +1,5 @@
 require('dotenv').config();
 const bcrypt = require('bcrypt');
-const loginrouter = require('express').Router();
-const routerPrueba = require('express').Router();
 const jwt = require('jsonwebtoken');
 const fsql = require('../controllers/task.controllers.js');
 
@@ -23,10 +21,7 @@ const loggin = async (request, response) => {
         }
 
         const token = jwt.sign(userForToken, process.env.SECRET,{expiresIn: '1h'} ); // firmar el token con un objeto y una palabra secreta
-
-        //  a donde va una trama sin etiqueta  -> tramas etiquetadas y no atiquetadas
-        // en que dispositivo se realiza la acl
-        // 
+        
 
         response.status(200).send({
             username: user[0].username,

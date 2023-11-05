@@ -45,13 +45,19 @@ const getUserByCorreo = async (correo) =>
 
 }
 
-const getallBooks=  async (req, res) => {
-    const books = await db.any('SELECT * FROM books');
-    res.json(books);
-
+async function getallBooks(){
+    try{
+        const books = await db.any('SELECT * FROM libro');
+        return books;
+    }catch(error){
+        console.error('Error al obtener los libros', error);
+        throw error;
+    }
 }
 
 //mostrar un libro
+
+
 
 
 
