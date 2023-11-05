@@ -9,6 +9,9 @@ const authentication = require('../controllers/register.js');
 
 const updateController = require('../controllers/update.js');
 const sendAllBooks = require('../controllers/books.show.js');
+const UserPasswordController = require('../controllers/user-password.controller');
+
+const userPasswordController = new UserPasswordController();
 
 
 const {searchByAuthor} = require('../controllers/search.js');
@@ -18,6 +21,17 @@ const {searchByGenre} = require('../controllers/search.js');
 router.post('/register', authentication.register);
 
 router.put('/updateUser/:username',userExtractor, updateController.updateUserData);
+
+router.post(
+  '/send/:email',userExtractor,
+  userPasswordController.sendEmailToResetPassword
+);
+
+router.post(
+  '/reset/:token',userExtractor,
+  userPasswordController.resetPassword
+);
+
 
 router.get('/genero/:genero',searchByGenre);
 router.get('/autor/:autor',searchByAuthor);
