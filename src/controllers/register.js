@@ -83,4 +83,4 @@ async function register (req, res)
 }
 
 
-module.exports.register = register;
+module.exports = register;

@@ -1,21 +1,15 @@
-const { generateRandomString, generateHash } = require('../utils/credentials.util');
-const { getEmailTemplate } = require('../template/template');
-const { sendEmail } = require('../utils/email.util');
-const db = require('../db.js');
 const fsql = require('./task.controllers.js');
-db.connect();
+const nodemailer = require('nodemailer');
+const credentials = require('../utils/credentials.util.js');
 
 
-class UserPasswordController {
-
-  async sendEmailToResetPassword(req, res) {
+ const sendEmailToResetPassword =  async (req, res) => {
     try {
 
-      const username = req.username;
-      const { email } = req.params;
+      const email = req.body.email;
 
-      const user = fsql.getallUsername(username);
-
+      const user = await fsql.getUserByCorreo(email);
+      
       if(!user) {
         return res.json({
           success: false,
@@ -23,109 +17,67 @@ class UserPasswordController {
         });
       }
 
-      let userPassword = await db.oneOrNone({
-        where: {
-          userId: user.getDataValue('id'),
-          isUsed: false
+
+      let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'Bookfinder553@gmail.com',
+          pass: 'wlzx ezrk qfyr ffjv'
         }
       });
+      const codigo = credentials.generateRandomString(6);  // aqui voy a guardar este codigo en la base de datos
+      let mailOptions = {
+        from: 'Bookfinder553@gmail.com',
+        to: email,
+        subject: "Reset Password",
+        text: `este es el codigo ${codigo} \npara recuperar la contraseña debes ingresarlo en la pagina`
+      };
+    
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+          console.log(error);
+          return res.status(500).send({
+            success: false,
+            message: 'Error al enviar el email'
+          });
+        } else {
+          console.log('Email sent: ' + info.response);
+          try{ // se guarda temporalmente el codigo de recuperacion en la base de datos
+            if(user[1]){
+              fsql.setIntoCodigo('administrador', user[0], codigo);
+            }else{
+              fsql.setIntoCodigo('usuario', user[0], codigo);
+            }
+            }catch(error){
+            console.error('Error al guardar el codigo de recuperacion', error);
+            res.status(500).send({
+              success: false,
+              message: 'Error al guardar codigo intente nuevamente'
+            });
+          }
 
-      if (userPassword) {
-        userPassword.setDataValue('isUsed', true);
-        await userPassword.save();
-      }
+          return res.status(200).send({
+            success: true,
+            message: 'El email se envio correctamente'
+          });
 
-      const token = generateRandomString(16);
-
-      userPassword = new UserPassword({
-        userId: user.getDataValue('id'),
-        email: email,
-        token: token,
-        is_used: false
-      });
-
-      const data = {
-        email: email,
-        token: token
-      }
-
-      const emailHTMLTemplate = getEmailTemplate(data);
-
-      await sendEmail(email, 'Recuperar contraseña', emailHTMLTemplate);
-      await userPassword.save();
-
-      res.json({
-        success: true,
-        email: email,
-        token: token,
-        msg: 'Email enviado correctamente!'
-      });
-      
-    } catch (error) {
-      console.log('Error', error.message);
-      res.json({
-        success: false,
-        msg: 'Error al enviar email'
-      });
-    }
-  }
-
-  async resetPassword(req, res) {
-    try {
-      
-      const { token } = req.params;
-      const { password, password2 } = req.body;
-
-      const userPassword = await db.oneOrNone({
-        where: {
-          token: token
         }
       });
-
-      if (!userPassword) {
-        return res.json({
-          success: false,
-          msg: 'Error: Debe enviar solicitud por correo'
-        });
-      }
-
-      if(userPassword.getDataValue('isUsed') === true) {
-        return res.json({
-          success: false,
-          msg: 'Error: el token ya se usó o expiró'
-        });
-      }
-
-      if (password !== password2) {
-        return res.json({
-          success: false,
-          msg: 'Las contraseñas no coinciden'
-        });
-      }
-
-      userPassword.setDataValue('isUsed', true);
-      await userPassword.save();
-
-      const user = await User.findByPk(userPassword.getDataValue('userId'));
-      const passwordHash = generateHash(password);
-      user.setDataValue('password', passwordHash);
-
-      await user.save();
-      res.json({
-        success: true,
-        email: user.getDataValue('email'),
-        msg: 'Las contraseñas se cambiaron correctamente'
-      });
-
-    } catch (error) {
-      console.log('Error', error.message);
-      res.json({
+    }catch(error){
+      return res.status(500).send({
         success: false,
-        msg: 'Error al enviar email'
+        message: 'Error al encontrar email'
       });
     }
-  }
-
 }
 
-module.exports = UserPasswordController;
+
+
+
+
+
+
+module.exports = sendEmailToResetPassword;
+
+
+//sendEmail('recipient-email@gmail.com', 'Password Reset', 'Here is your password reset link...');

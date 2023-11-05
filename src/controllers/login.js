@@ -32,4 +32,4 @@ const loggin = async (request, response) => {
 
 }
 
-module.exports.loggin = loggin;
+module.exports = loggin;

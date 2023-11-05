@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 
-const saltRounds = 10;
+const saltRounds = 8;
 const salt = bcrypt.genSaltSync(saltRounds);
 
 const generateHash = (text) => {
