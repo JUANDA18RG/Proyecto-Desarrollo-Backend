@@ -1,5 +1,7 @@
 const { request, response } = require("express");
-const { token } = require("morgan");
+const jwt = require("jsonwebtoken");
+let token = null;
+
 
 module.exports = (request, response,next) => {
     const { authorization } = request.headers;
