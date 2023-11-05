@@ -8,7 +8,6 @@ router.use(express.json());
 
 const {getallBooks} = require('../controllers/task.controllers.js');
 
-const userExtractor = require('./userExtractor');
 const authentication = require('../controllers/register.js');
 
 const updateController = require('../controllers/update.js');
