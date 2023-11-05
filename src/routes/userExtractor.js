@@ -1,12 +1,14 @@
 const { request, response } = require("express");
-const { token } = require("morgan");
+const jwt = require("jsonwebtoken");
+let token = "";
 
 module.exports = (request, response,next) => {
-    const { authorization } = request.headers;
-    console.log(authorization);
+    const {authorization} = request.headers;
+    //console.log(authorization);
     if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
         token = authorization.substring(7);
     }
+    //console.log(token);
 
     const decodedToken = jwt.verify(token, process.env.SECRET);
 
@@ -17,4 +19,8 @@ module.exports = (request, response,next) => {
     request.username = username;
 
     next();
-}// user estractor middleware lo podemos utilizar en todas las rutas que queramos proteger
+}
+
+
+
+// user estractor middleware lo podemos utilizar en todas las rutas que queramos proteger

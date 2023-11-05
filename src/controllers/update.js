@@ -1,7 +1,6 @@
  
 const bcrypt = require('bcrypt');
 const db = require('../db.js');
-const jwt = require('jsonwebtoken');
 
 async function updateUserData(req, res) {
   const { nombres, apellidos, password } = req.body;
@@ -12,21 +11,23 @@ async function updateUserData(req, res) {
   if (nombres) {
     const expresionAlfabetica = /^[A-Za-z ]+/;
     if (!(expresionAlfabetica.test(nombres))) {
-      return res.status(400).send({ status: 'nombre no válido', message: 'El nombre contiene números o símbolos' });
+      return res.status(400).send({ error: 'los nombres no deben contener números o símbolos' });
     }
     updateFields.nombres = nombres;
   }
   if (apellidos) {
     const expresionAlfabetica = /^[A-Za-z ]+/;
     if (!(expresionAlfabetica.test(apellidos))) {
-      return res.status(400).send({ status: 'apellido no válido', message: 'Los apellidos contienen números o símbolos' });
+      return res.status(400).send({ error: 'Los apellidos no deben contener números o símbolos' });
     }
     updateFields.apellidos = apellidos;
   }
   if (password) {
-    const expresionContraseña = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[@#$%*-^&+=!]).+$/;
+    const expresionContraseña = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[@#$%*-^&+=!]).{8}$/;
+
+    //console.log(expresionContraseña.test(password));
     if (!expresionContraseña.test(password)) {
-      return res.status(400).send({ status: 'contraseña no válida', message: 'La contraseña debe contener al menos una mayúscula, una minúscula y un carácter especial' });
+      return res.status(400).send({ error: 'La contraseña debe tener 8 caracteres,contener por lo menos una mayuscula, una minuscula y un caracter especial' });
     }
     const salt = await bcrypt.genSalt(8);
     const passwordHash = await bcrypt.hash(password, salt);
@@ -34,7 +35,7 @@ async function updateUserData(req, res) {
   }
 
   if (Object.keys(updateFields).length === 0) {
-    return res.status(400).send({ status: 'Error', message: 'Ningún campo válido proporcionado para actualizar' });
+    return res.status(400).json({ error: 'Ningún campo válido proporcionado para actualizar' });
   }
 
   // Asegúrate de que la actualización solo se aplique al usuario autenticado
@@ -48,7 +49,8 @@ async function updateUserData(req, res) {
       return res.status(200).send({ status: 'ok', message: 'Datos actualizados exitosamente' });
     })
     .catch(error => {
-      return res.status(400).send({ status: 'Error', message: 'Fallo al intentar actualizar los datos' });
+      console.error('Error actualizando datos de usuario', error);
+      return res.status(400).json({ error:'Fallo al intentar actualizar los datos' });
     });
 }
 

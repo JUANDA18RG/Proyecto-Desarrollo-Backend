@@ -1,8 +1,9 @@
+ 
 const pgp = require('pg-promise')();
 
 const db = pgp
 ({
-  user: 'postgres',
+  user: 'niko',
   host: 'localhost',
   database: 'BookFinder',
   password: '12345',
@@ -10,5 +11,3 @@ const db = pgp
 })
 
 module.exports = db;
-
-
