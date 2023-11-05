@@ -3,7 +3,7 @@ const pgp = require('pg-promise')();
 
 const db = pgp
 ({
-  user: 'niko',
+  user: 'postgres',
   host: 'localhost',
   database: 'BookFinder',
   password: '12345',
