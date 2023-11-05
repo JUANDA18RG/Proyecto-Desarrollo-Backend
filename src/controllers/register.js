@@ -18,28 +18,26 @@ async function register (req, res)
   }
 
     //Valida que el username no exista en la base de datos
+
   const userExist = await fsql.getallUsername(username);
+  const correoExist = await fsql.getUserByCorreo(correo);
+  if((!(correoExist === null)) && userExist)
+  {
+    return res.status(400).send({status: 'Correo  y usuario existente', message: 'Ya existe el correo y el nombre de usuario'});
+  }
+  
   if (userExist)
   {
     return res.status(400).send({status: 'Usuario existente', message: 'Ya existe el username'});
   }
 
   //Valida que el correo no exista en la base de datos
-  const correoExist = await fsql.getUserByCorreo(correo);
   if(!(correoExist === null))
   {
     return res.status(400).send({status: 'Correo existente', message: 'Ya existe el correo'});
   }
 
-  if(!(correoExist === null))
-  {
-    return res.status(400).send({status: 'Correo existente', message: 'Ya existe el correo'});
-  }
 
-  if(!(correoExist === null) && userExist)
-  {
-    return res.status(400).send({status: 'Correo  y usuario existente', message: 'Ya existe el correo y el nombre de usuario'});
-  }
 
   // Valida que el nombre de usuario no empiece por numero o simbolo
   const expresionRegular = /^[A-Za-z][A-Za-z0-9!@#$-_%^&*]*$/ /// Esta expresión regular verifica si el primer carácter es un número o alguno de los símbolos
@@ -62,7 +60,7 @@ async function register (req, res)
   }
 
   // Valida que la contraseña tenga por lo menos una letra mayúscula, una letra minúscula y un carácter especial
-  const expresionContraseña = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[@#$%*-^&+=!]).{8}$/;
+  const expresionContraseña = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[@#$%*-^&+=!]).{8,}$/;
   if (!(expresionContraseña.test(password)))
   {
     return res.status(400).send({status: 'contraseña no valida', message: 'La contraseña debe tener 8 caracteres,contener por lo menos una mayuscula, una minuscula y un caracter especial'});
