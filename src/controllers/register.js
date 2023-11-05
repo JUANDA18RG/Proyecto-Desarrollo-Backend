@@ -60,10 +60,10 @@ async function register (req, res)
   }
 
   // Valida que la contraseña tenga por lo menos una letra mayúscula, una letra minúscula y un carácter especial
-  const expresionContraseña = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[@#$%*-^&+=!]).{8,}$/;
+  const expresionContraseña = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[@#$%*-^&_+=!]).{8,}$/;
   if (!(expresionContraseña.test(password)))
   {
-    return res.status(400).send({status: 'contraseña no valida', message: 'La contraseña debe tener 8 caracteres,contener por lo menos una mayuscula, una minuscula y un caracter especial'});
+    return res.status(400).send({status: 'contraseña no valida'});
   } 
   
   // Encriptacion de la contraseña con bcrypt
