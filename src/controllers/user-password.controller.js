@@ -76,7 +76,6 @@ const credentials = require('../utils/credentials.util.js');
 
 
 
-
 module.exports = sendEmailToResetPassword;
 
 

@@ -61,16 +61,57 @@ const getUserByUsername = async (username) =>
     try
     {
         const user = await db.oneOrNone('SELECT * FROM usuario WHERE username = $1', [username]);
-        return user;
+        if(user){
+            return user;
+        }else{const user = await db.oneOrNone('SELECT * FROM administrador WHERE username = $1', [username]);
+            return user;}
     }
     catch(error)
     {
         console.error('Hay mas de dos usuarios con el mismo username', error);
+        return error;
     }
 }
 // const username oneOrNone('select username from administrador where codVerificacion = $1', ['OCSLDF']);
 // if(username){ cambia la contraseña update
 
+const UpdatePassword = async (username, password) =>{
+    try{
+        const user = await db.oneOrNone('SELECT * FROM persona WHERE username = $1', [username]);
+        if(user){
+            await db.none('UPDATE persona SET passwordhash = $1 WHERE username = $2', [password, username]);
+            return true;
+        }
+        return false;
+
+    }catch(error){console.error('Hay un error al actualizar la contraseña', error);
+    return error;}
+}
+
+const getUsernameByCodigo = async (codigo) =>
+{
+    try{
+        const username = await db.oneOrNone('select username from administrador where codVerificacion = $1', [codigo]);
+        if(username){
+            return username;}else if(!username){
+                const username = await db.oneOrNone('select username from usuario where codVerificacion = $1', [codigo]);
+                return username;}
+    }catch(error){
+        console.error('Hay un error al obtener el username', error); 
+        return error;}
+}
+
+const deleteCodigo = async (username) =>{
+    try{
+        const user = await db.oneOrNone('SELECT * FROM usuario WHERE username = $1', [username]);
+        if(user){
+            await db.none('UPDATE usuario SET codVerificacion = $1 WHERE username = $2', [null, username]);
+        }else{
+            await db.none('UPDATE administrador SET codVerificacion = $1 WHERE username = $2', [null, username]);
+        }
+    }catch(error){console.error('Hay un error al eliminar el codigo', error);
+    return error;}
+}
 
 
 const setIntoCodigo = async (tipoPersona, user, codigo) => 
@@ -110,5 +151,8 @@ module.exports = {
     getUserByCorreo,
     getallBooks,
     getUserByUsername,
-    setIntoCodigo
+    setIntoCodigo,
+    getUsernameByCodigo,
+    UpdatePassword,
+    deleteCodigo
 }

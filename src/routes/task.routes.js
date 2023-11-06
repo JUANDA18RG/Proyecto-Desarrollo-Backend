@@ -10,9 +10,12 @@ const register = require('../controllers/register.js');
 const updateController = require('../controllers/update.js');
 const sendAllBooks = require('../controllers/books.show.js');
 const sendEmailToResetPassword = require('../controllers/user-password.controller.js');
+const changePassword = require('../controllers/change-password.controller.js');
 
 const {searchByAuthor} = require('../controllers/search.js');
 const {searchByGenre} = require('../controllers/search.js');
+const validarCod = require('../controllers/codigo-verificacion.js');
+
 
 
 router.post('/register', register);
@@ -23,12 +26,16 @@ router.post(
   '/send/email',
   sendEmailToResetPassword
   );
-/**
- * router.post(
-  '/reset/:token',
-  userPasswordController.resetPassword
+
+router.post(
+  '/verificacion',
+  validarCod);
+
+  router.post(
+  '/reset',
+  changePassword
 );
- */
+ 
 
 
 
