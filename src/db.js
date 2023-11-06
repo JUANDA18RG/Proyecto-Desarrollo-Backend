@@ -3,10 +3,10 @@ const pgp = require('pg-promise')();
 
 const db = pgp
 ({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'BookFinder',
-  password: 'Acos306254',
+  user: process.env.USER,
+  host: process.env.HOST,
+  database: process.env.DATABASE,
+  password: process.env.PASSWORD,
   port: 5432
 })
 
