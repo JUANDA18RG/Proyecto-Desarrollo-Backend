@@ -14,6 +14,7 @@ const sendAllBooks = async (request, response) => {
         titulo: book.titulo,
         autor: book.autor,
         portada: book.portada,
+        genero: book.genero,
         copiasDisponibles: book.copiasdisponibles,
         copiasReservadas: (book.cantcopias - book.copiasdisponibles),
         anioPublicacion: book.aniopublicacion

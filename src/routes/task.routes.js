@@ -26,7 +26,6 @@ router.post(
   '/send/email',
   sendEmailToResetPassword
   );
-// KevinA1#$
 router.post(
   '/verificacion',
   validarCod);
