@@ -11,7 +11,7 @@ const credentials = require('../utils/credentials.util.js');
       const user = await fsql.getUserByCorreo(email);
       
       if(!user) {
-        return res.json({
+        return res.status(400).json({
           success: false,
           msg: 'El email es incorrecto'
         });
@@ -45,8 +45,10 @@ const credentials = require('../utils/credentials.util.js');
           try{ // se guarda temporalmente el codigo de recuperacion en la base de datos
             if(user[1]){
               fsql.setIntoCodigo('administrador', user[0], codigo);
+
             }else{
               fsql.setIntoCodigo('usuario', user[0], codigo);
+
             }
             }catch(error){
             console.error('Error al guardar el codigo de recuperacion', error);
