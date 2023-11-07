@@ -3,8 +3,8 @@ const Credentials = require("../utils/credentials.util");
 
 const changePassword = async (req, res) => {
   try{
-    const {username, password} = req.body;
-    const user = await fslq.getUserByUsername(username);
+    const {correo, password} = req.body;
+    const user = await fslq.getUserByCorreo(correo);
     const passwordHash = await Credentials.generateHash(password);
     if(!user){
       return res.status(401).json({
@@ -12,8 +12,8 @@ const changePassword = async (req, res) => {
         message: "El usuario no existe",
       });
     }else{
-      const actualizar = await fslq.UpdatePassword(username, passwordHash);
-      await fslq.deleteCodigo(username);
+      const actualizar = await fslq.UpdatePassword(user[0].username, passwordHash);
+      await fslq.deleteCodigo(user[0].username);
       if(!actualizar){
         return res.status(401).json({
           success: false,
