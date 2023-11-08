@@ -10,7 +10,7 @@ const validarCod = async (req, res) => {
                 message: 'Codigo correcto'
             });
         }
-        return res.status(401).json({
+        return res.status(400).json({
             success: false,
             message: 'Codigo incorrecto'
         });

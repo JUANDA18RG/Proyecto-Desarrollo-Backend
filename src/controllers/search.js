@@ -1,5 +1,6 @@
 const fsql = require('./task.controllers.js');
 const db = require('../db.js');
+const FuzzySearch = require('fuzzy-search');
 //db.connect();
 
 async function searchByGenre (req, res)
@@ -45,9 +46,43 @@ async function searchByAuthor (req, res)
     return res.status(400).send({status: 'Error', message: 'Fallo al intentar encontrar el autor'});
   });
 }
+// funcion de uso de la libreria fuzzy-search para realizar busquedas difusas a los titulos de los libros 
+// para devolver los libros que tengan coincidencias con lo que ingresa el usuario
+const searchByTitleDifused = async (req, res) => {
+ 
+  try {
+  const books = await fsql.getallBooks();
+  const titulo = req.body.titulo;
+  
+  if (!books) {
+    return res.status(404).send({ error: 'No hay libros registrados en la base de datos' });
+  }
+
+  const searcher = new FuzzySearch(books, ['titulo'], {
+    caseSensitive: false,
+  });
+
+  const searchResult = searcher.search(titulo);
+  if (searchResult.length === 0) {
+    return res.status(404).send({ error: 'No se encontraron coincidencias con el titulo ingresado' });
+  }
+  return res.status(200).send({ message: 'Busqueda exitosa', data: searchResult });
+
+  }catch(error){
+    console.error('Error al obtener los libros', error);
+    response.status(500).send({
+        error: error.message
+    });
+  }
+
+
+
+}
+
 
 
 module.exports = {
                     searchByAuthor,
-                    searchByGenre
+                    searchByGenre,
+                    searchByTitleDifused
                 };

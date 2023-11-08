@@ -12,8 +12,7 @@ const sendAllBooks = require('../controllers/books.show.js');
 const sendEmailToResetPassword = require('../controllers/user-password.controller.js');
 const changePassword = require('../controllers/change-password.controller.js');
 
-const {searchByAuthor} = require('../controllers/search.js');
-const {searchByGenre} = require('../controllers/search.js');
+const {searchByAuthor, searchByGenre, searchByTitleDifused} = require('../controllers/search.js');
 const validarCod = require('../controllers/codigo-verificacion.js');
 
 
@@ -40,6 +39,10 @@ router.post(
 
 router.get('/genero/:genero',searchByGenre);
 router.get('/autor/:autor',searchByAuthor);
+// la busqueda por autor ya que contiene varias palabras se debe recibir un post con el titulo
+// en el cuerpo de la peticion si se envia como parametro de la url causaria problemas 
+// al encontrar espacios entre estos.
+router.post('/search/title',searchByTitleDifused);
 
 routerlogin.post('/api/login', loggin);
 
