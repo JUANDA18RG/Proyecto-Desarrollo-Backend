@@ -46,6 +46,29 @@ async function searchByAuthor (req, res)
     return res.status(400).send({status: 'Error', message: 'Fallo al intentar encontrar el autor'});
   });
 }
+
+
+async function searchByAnioPublicacion(req, res) {
+  const aniopublicacion = parseInt(req.params.aniopublicacion);
+
+  db.any('select * from libro where aniopublicacion = $1', [aniopublicacion])
+    .then(data => {
+      if (data[0] != null) {
+        return res.status(200).send({ message: 'Filtro exitoso', data });
+      }
+      return res.status(404).send({
+        status: `No existen libros publicados en el año ${aniopublicacion}`,
+        message: 'Filtro vacío',
+      });
+    })
+    .catch(error => {
+      return res.status(400).send({
+        status: 'Error',
+        message: 'Fallo al intentar encontrar libros por año de publicación',
+      });
+    });
+}
+
 // funcion de uso de la libreria fuzzy-search para realizar busquedas difusas a los titulos de los libros 
 // para devolver los libros que tengan coincidencias con lo que ingresa el usuario
 const searchByTitleDifused = async (req, res) => {
@@ -84,5 +107,6 @@ const searchByTitleDifused = async (req, res) => {
 module.exports = {
                     searchByAuthor,
                     searchByGenre,
-                    searchByTitleDifused
+                    searchByTitleDifused,
+                    searchByAnioPublicacion
                 };
