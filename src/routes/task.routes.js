@@ -52,6 +52,6 @@ routerlogin.post('/api/login', loggin);
 // mostrar todos los libros para la pagina despues de logearse.
 routerlogin.get('/api/Books', sendAllBooks);
 
-router.get('/booksdata', booksdata);
+router.get('/booksdata/:id', booksdata);
 
 module.exports = {router, routerlogin};
