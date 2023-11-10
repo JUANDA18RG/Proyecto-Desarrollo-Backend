@@ -17,7 +17,8 @@ const sendAllBooks = async (request, response) => {
         genero: book.genero,
         copiasDisponibles: book.copiasdisponibles,
         copiasReservadas: (book.cantcopias - book.copiasdisponibles),
-        anioPublicacion: book.aniopublicacion
+        anioPublicacion: book.aniopublicacion,
+        valoracion: book.valoracion
 
     }});
     response.status(200).send(bookSummary);
