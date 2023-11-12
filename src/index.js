@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const router = require('./routes/task.routes');
 const app = express();
+const handlerError = require('./handlerError.js');
 
 app.use(cors({
   origin: 'http://localhost:5173' // solo permite recibir de esta funcion
@@ -23,6 +24,8 @@ app.use(cors({
 app.use(router.router);
 app.use(router.routerlogin);
 app.use('/reserva', router.routerReserva);
+
+app.use(handlerError);
 
 app.listen(app.get('port'), () => {
   console.log(`Server is running on port ${app.get('port')}`);

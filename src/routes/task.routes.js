@@ -24,7 +24,7 @@ const actualizarFechaDevolucion = require('../controllers/EditReserva.js');
 
 router.post('/register', register);
 
-router.put('/updateUser/:username',userExtractor, ERRORS, updateController.updateUserData);
+router.put('/updateUser/:username',userExtractor, updateController.updateUserData);
 
 router.post(
   '/send/email',
@@ -62,5 +62,4 @@ routerReserva.get('/:id', obtenerInfoReserva);
 
 // al  realizar esta peticion debes enviar tambien el token de autorizacion
 routerReserva.put('/EditarReserva',userExtractor, actualizarFechaDevolucion);
-
 module.exports = {router, routerlogin, routerReserva};

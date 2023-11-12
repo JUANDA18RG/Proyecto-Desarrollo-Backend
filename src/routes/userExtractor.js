@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 let token = "";
 
 module.exports = (request, response,next) => {
+   try{
     const {authorization} = request.headers;
     //console.log(authorization);
     if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
@@ -17,6 +18,10 @@ module.exports = (request, response,next) => {
     }
     const {username} = decodedToken;
     request.username = username;
+   }catch(error){
+       //console.log(error);
+       next(error);
+   }
 
     next();
 }

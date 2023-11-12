@@ -10,4 +10,5 @@ module.exports = (error, request, response, next) => {
     console.error(error.name)
     const handler = ERROR_HANDLERS[error.name] || ERROR_HANDLERS.defaultError
     handler(response, error)
+    //console.error(error.message)
 }

@@ -12,8 +12,6 @@ async function actualizarFechaDevolucion(req, res) {
     }else if(reserva.usuario !== username){
       return res.status(400).json({ message: `La reserva solo puede ser modificada por su creador ${username}` });
     }
-    const fecha = new Date();
-    console.log(fecha);
   
     if(!(reserva.estado == "Reservado")){
       return res.status(400).json({ message: 'La reserva no puede ser modificada' });
