@@ -4,6 +4,7 @@ const routerlogin = express.Router();
 const loggin = require('../controllers/login.js');
 const routerReserva = express.Router();
 
+const ERRORS = require('../handlerError.js');
 const router = express.Router();
 router.use(express.json());
 const register = require('../controllers/register.js');
@@ -23,7 +24,7 @@ const actualizarFechaDevolucion = require('../controllers/EditReserva.js');
 
 router.post('/register', register);
 
-router.put('/updateUser/:username',userExtractor, updateController.updateUserData);
+router.put('/updateUser/:username',userExtractor, ERRORS, updateController.updateUserData);
 
 router.post(
   '/send/email',
