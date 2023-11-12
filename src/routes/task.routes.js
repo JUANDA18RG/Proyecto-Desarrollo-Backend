@@ -4,7 +4,6 @@ const routerlogin = express.Router();
 const loggin = require('../controllers/login.js');
 const routerReserva = express.Router();
 
-const ERRORS = require('../handlerError.js');
 const router = express.Router();
 router.use(express.json());
 
@@ -16,10 +15,8 @@ const sendEmailToResetPassword = require('../controllers/user-password.controlle
 const changePassword = require('../controllers/change-password.controller.js');
 const validarCod = require('../controllers/codigo-verificacion.js');
 const {searchByAuthor, searchByGenre, searchByTitleDifused, searchByAnioPublicacion } = require('../controllers/search.js');
-const validarCod = require('../controllers/codigo-verificacion.js');
 const obtenerInfoReserva = require('../controllers/infoReserva.js');
 const actualizarFechaDevolucion = require('../controllers/EditReserva.js');
-
 const booking = require('../controllers/bookings.js');
 
 
@@ -44,7 +41,7 @@ routerlogin.get('/api/Books', sendAllBooks);
 
 router.get('/booksdata/:id', booksdata);
 
-router.post('/booking', userExtractor, booking);
+routerReserva.post('/booking', userExtractor, booking);
 
 
 routerReserva.get('/:id', obtenerInfoReserva);

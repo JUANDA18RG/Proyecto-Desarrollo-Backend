@@ -200,7 +200,7 @@ const getBookByISBN = async (ISBN) =>
         console.error('Hay un error al encontrar el libro', error);
         return error;
     }
-// funcion que toma el id de reserva y devuelve algunos datos de esta reserva
+}
 
 // llamado a las funciones
 module.exports = {
@@ -217,9 +217,3 @@ module.exports = {
     updateFechaDevolucion,
     getBookByISBN
 }
-
-
-
-}
-
-

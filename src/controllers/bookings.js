@@ -1,4 +1,4 @@
-const fsql = require('./task.controllers.js');
+const {getUserByUsername, getBookByISBN} = require('./task.controllers.js');
 const { format, add, parseISO } = require('date-fns');
 const db = require('../db.js');
 
@@ -16,8 +16,8 @@ async function booking (req, res)
         send({message : 'El tiempo indicado debe ser uno de los siguientes números enteros: 8, 15, 30.'});
     }
     
-    const userExist = await fsql.getallUsername(username);
-    const bookExist = await fsql.getBookByISBN(book);
+    const userExist = await getUserByUsername(username);
+    const bookExist = await getBookByISBN(book);
 
     if(!userExist)
     {
@@ -42,7 +42,7 @@ async function booking (req, res)
 
     db.one('INSERT INTO reserva (estado, fechaReserva, fechaDevolucion, libro, usuario) VALUES($1, $2, $3, $4, $5) RETURNING id' , ['Reservado', fechaReserva, fechaDevolucion, book, username])
     .then(resultado => {
-        return res.status(201).send({id: resultado.id, message: 'La reserva fue realizada exitosamente' });
+        return res.status(200).send({id: resultado.id, message: 'La reserva fue realizada exitosamente' });
     }).
     catch(error=>
     {
