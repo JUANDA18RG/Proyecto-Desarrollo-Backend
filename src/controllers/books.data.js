@@ -27,23 +27,26 @@ const booksdata = async (request, response) => {
 }
 
 function createBookSummary(book) {
-    if (!book.isbn || !book.titulo || !book.autor || !book.portada || !book.copiasdisponibles || !book.cantcopias || !book.aniopublicacion) {
-        throw new Error('Alguna propiedad no encontrada');
-    }
-    return {
-        id: book.isbn,  // Utiliza el ISBN como el valor del campo "id"
-        Titulo: book.titulo,
-        description: book.sinopsis,
-        image: book.portada,
-        Author: book.autor,
-        Codigo: book.isbn,
-        Disponibles: book.copiasdisponibles,
-        Prestados: (book.cantcopias - book.copiasdisponibles),
-        Total: book.cantcopias,
-        year: book.aniopublicacion,
-        categoria: book.genero,
-        valoracion: book.valoracion
+    // Lista de propiedades requeridas
+    const requiredProperties = ['isbn', 'titulo', 'autor', 'portada', 'copiasdisponibles', 'cantcopias', 'aniopublicacion'];
+
+    // Verificar la presencia de las propiedades requeridas y asignar valores predeterminados o "desconocidos" si es necesario
+    const bookSummary = {
+        id: book.isbn || 'Desconocido',
+        Titulo: book.titulo || 'Desconocido',
+        description: book.sinopsis || 'Sin descripción disponible',
+        image: book.portada || 'Imagen no disponible',
+        Author: book.autor || 'Desconocido',
+        Codigo: book.isbn || 'Desconocido',
+        Disponibles: book.copiasdisponibles || 0,
+        Prestados: (book.cantcopias - (book.copiasdisponibles || 0)),
+        Total: book.cantcopias || 0,
+        year: book.aniopublicacion || 'Año de publicación desconocido',
+        categoria: book.genero || 'Categoría no especificada',
+        valoracion: book.valoracion || 0,
     };
+
+    return bookSummary;
 }
 
 module.exports = booksdata;
