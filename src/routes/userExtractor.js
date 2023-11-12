@@ -5,11 +5,11 @@ let token = "";
 module.exports = (request, response,next) => {
    try{
     const {authorization} = request.headers;
-    //console.log(authorization);
+    
     if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
         token = authorization.substring(7);
     }
-    //console.log(token);
+
 
     const decodedToken = jwt.verify(token, process.env.SECRET);
 
@@ -19,7 +19,6 @@ module.exports = (request, response,next) => {
     const {username} = decodedToken;
     request.username = username;
    }catch(error){
-       //console.log(error);
        next(error);
    }
 

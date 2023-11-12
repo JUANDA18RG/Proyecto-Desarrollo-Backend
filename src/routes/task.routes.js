@@ -4,7 +4,6 @@ const routerlogin = express.Router();
 const loggin = require('../controllers/login.js');
 const routerReserva = express.Router();
 
-const ERRORS = require('../handlerError.js');
 const router = express.Router();
 router.use(express.json());
 const register = require('../controllers/register.js');
