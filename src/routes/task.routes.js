@@ -2,7 +2,9 @@ const express = require('express');
 const userExtractor = require('./userExtractor');
 const routerlogin = express.Router();
 const loggin = require('../controllers/login.js');
+const routerReserva = express.Router();
 
+const ERRORS = require('../handlerError.js');
 const router = express.Router();
 router.use(express.json());
 
@@ -14,6 +16,10 @@ const sendEmailToResetPassword = require('../controllers/user-password.controlle
 const changePassword = require('../controllers/change-password.controller.js');
 const validarCod = require('../controllers/codigo-verificacion.js');
 const {searchByAuthor, searchByGenre, searchByTitleDifused, searchByAnioPublicacion } = require('../controllers/search.js');
+const validarCod = require('../controllers/codigo-verificacion.js');
+const obtenerInfoReserva = require('../controllers/infoReserva.js');
+const actualizarFechaDevolucion = require('../controllers/EditReserva.js');
+
 const booking = require('../controllers/bookings.js');
 
 
@@ -40,4 +46,9 @@ router.get('/booksdata/:id', booksdata);
 
 router.post('/booking', userExtractor, booking);
 
-module.exports = {router, routerlogin};
+
+routerReserva.get('/:id', obtenerInfoReserva);
+
+// al  realizar esta peticion debes enviar tambien el token de autorizacion
+routerReserva.put('/EditarReserva',userExtractor, actualizarFechaDevolucion);
+module.exports = {router, routerlogin, routerReserva};
