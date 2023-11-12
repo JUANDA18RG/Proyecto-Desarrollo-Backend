@@ -6,41 +6,25 @@ const routerReserva = express.Router();
 
 const router = express.Router();
 router.use(express.json());
-const register = require('../controllers/register.js');
 
+const register = require('../controllers/register.js');
 const updateController = require('../controllers/update.js');
 const sendAllBooks = require('../controllers/books.show.js');
 const booksdata = require('../controllers/books.data.js');
 const sendEmailToResetPassword = require('../controllers/user-password.controller.js');
 const changePassword = require('../controllers/change-password.controller.js');
-
-const {searchByAuthor, searchByGenre, searchByTitleDifused, searchByAnioPublicacion } = require('../controllers/search.js');
 const validarCod = require('../controllers/codigo-verificacion.js');
+const {searchByAuthor, searchByGenre, searchByTitleDifused, searchByAnioPublicacion } = require('../controllers/search.js');
 const obtenerInfoReserva = require('../controllers/infoReserva.js');
 const actualizarFechaDevolucion = require('../controllers/EditReserva.js');
-
+const booking = require('../controllers/bookings.js');
 
 
 router.post('/register', register);
-
 router.put('/updateUser/:username',userExtractor, updateController.updateUserData);
-
-router.post(
-  '/send/email',
-  sendEmailToResetPassword
-  );
-router.post(
-  '/verificacion',
-  validarCod);
-
-  router.post(
-  '/reset',
-  changePassword
-);
- 
-
-
-
+router.post('/send/email', sendEmailToResetPassword);
+router.post('/verificacion', validarCod);
+router.post('/reset', changePassword);
 router.get('/genero/:genero',searchByGenre);
 router.get('/autor/:autor',searchByAuthor);
 router.get('/aniopublicacion/:aniopublicacion', searchByAnioPublicacion);
@@ -56,6 +40,9 @@ routerlogin.post('/api/login', loggin);
 routerlogin.get('/api/Books', sendAllBooks);
 
 router.get('/booksdata/:id', booksdata);
+
+routerReserva.post('/booking', userExtractor, booking);
+
 
 routerReserva.get('/:id', obtenerInfoReserva);
 

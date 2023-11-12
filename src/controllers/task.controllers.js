@@ -31,7 +31,8 @@ const getUserByCorreo = async (correo) =>
         if(user)
         {
             const admin = await db.oneOrNone('SELECT * FROM administrador WHERE username = $1', [user.username]);
-            if(admin){
+            if(admin)
+            {
                 return [user, true]; // si es true significa que la persona es admin
             }
             return [user, false]; // si es false significa que la persona es usuario
@@ -46,10 +47,13 @@ const getUserByCorreo = async (correo) =>
 }
 
 async function getallBooks(){
-    try{
+    try
+    {
         const books = await db.any('SELECT * FROM libro');
         return books;
-    }catch(error){
+    }
+    catch(error)
+    {
         console.error('Error al obtener los libros', error);
         throw error;
     }
@@ -90,15 +94,19 @@ const UpdatePassword = async (username, password) =>{
 
 const getUsernameByCodigo = async (codigo) =>
 {
-    try{
+    try
+    {
         const username = await db.oneOrNone('select username from administrador where codVerificacion = $1', [codigo]);
         if(username){
             return username;}else if(!username){
                 const username = await db.oneOrNone('select username from usuario where codVerificacion = $1', [codigo]);
                 return username;}
-    }catch(error){
+    }
+    catch(error)
+    {
         console.error('Hay un error al obtener el username', error); 
-        return error;}
+        return error;
+    }
 }
 
 const deleteCodigo = async (username) =>{
@@ -177,6 +185,22 @@ const updateFechaDevolucion = async (id, fechaDevolucion) => {
     }
 }
 
+const getBookByISBN = async (ISBN) => 
+{
+    try
+    {
+        const book = await db.oneOrNone('SELECT * FROM libro WHERE ISBN = $1', [ISBN]);
+        if(book)
+        {
+            return book;
+        }
+    }
+    catch(error)
+    {
+        console.error('Hay un error al encontrar el libro', error);
+        return error;
+    }
+}
 
 // llamado a las funciones
 module.exports = {
@@ -190,17 +214,6 @@ module.exports = {
     deleteCodigo,
     getInfoReserva,
     getReservaById,
-    updateFechaDevolucion
+    updateFechaDevolucion,
+    getBookByISBN
 }
-
-
-
-
-//crear un libro
-
-
-
-
-//actualizar un libro
-
-
