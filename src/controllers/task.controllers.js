@@ -134,6 +134,66 @@ const setIntoCodigo = async (tipoPersona, user, codigo) =>
 }
 
 
+// funcion que toma el id de reserva y devuelve algunos datos de esta reserva
+const getInfoReserva = async (id) => 
+{
+    try
+    {
+        const reserva = await db.oneOrNone('SELECT fechaReserva, fechaDevolucion, Estado ' +
+                                             ' FROM reserva ' + 
+                                             ' WHERE id = $1', [id]);
+        return reserva;
+    }
+    catch(error)
+    {
+        console.error('Hay un error al obtener la reserva', error);
+        throw new Error(error.message);
+    }
+}
+
+// funcion que toma el id de reserva y devuelve todos los datos de esta reserva
+const getReservaById = async (id) => 
+{
+    try
+    {
+        const reserva = await db.oneOrNone('SELECT * FROM reserva WHERE id = $1', [id]);
+        return reserva;
+    }
+    catch(error)
+    {
+        console.error('Hay un error al obtener la reserva', error);
+        throw new Error(error.message);
+    }
+}
+
+// funcion que actualiza la fecha de devolucion de una reserva
+const updateFechaDevolucion = async (id, fechaDevolucion) => {
+    try {
+        await db.none('UPDATE reserva SET fechaDevolucion = $1 WHERE id = $2', [fechaDevolucion, id]);
+        return true;
+    } catch (error) {
+        console.error('Error al actualizar la fecha de devolución de la reserva', error);
+        throw new Error(error.message);
+    }
+}
+
+
+// llamado a las funciones
+module.exports = {
+    getallUsername,
+    getUserByCorreo,
+    getallBooks,
+    getUserByUsername,
+    setIntoCodigo,
+    getUsernameByCodigo,
+    UpdatePassword,
+    deleteCodigo,
+    getInfoReserva,
+    getReservaById,
+    updateFechaDevolucion
+}
+
+
 
 
 //crear un libro
@@ -144,15 +204,3 @@ const setIntoCodigo = async (tipoPersona, user, codigo) =>
 //actualizar un libro
 
 
-
-//llamado a las funciones
-module.exports = {
-    getallUsername,
-    getUserByCorreo,
-    getallBooks,
-    getUserByUsername,
-    setIntoCodigo,
-    getUsernameByCodigo,
-    UpdatePassword,
-    deleteCodigo
-}

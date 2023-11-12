@@ -22,6 +22,7 @@ app.use(cors({
 }));
 app.use(router.router);
 app.use(router.routerlogin);
+app.use('/reserva', router.routerReserva);
 
 app.listen(app.get('port'), () => {
   console.log(`Server is running on port ${app.get('port')}`);
