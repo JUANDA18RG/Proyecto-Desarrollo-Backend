@@ -3,7 +3,7 @@ const { add } = require('date-fns');
 const {formatFecha} = require('./functions.Used.js');
 
 async function actualizarFechaDevolucion(req, res) {
-  const { id, tiempo } = req.body;
+  const { id, time } = req.body;
   const username = req.username;
   try{
     const reserva = await fsql.getReservaById(id); // función que busca la reserva por id
@@ -16,22 +16,14 @@ async function actualizarFechaDevolucion(req, res) {
     if(!(reserva.estado == "Reservado")){
       return res.status(400).json({ message: 'La reserva no puede ser modificada' });
     }
-  
-    let fechaDevolucion;
-  
-    switch (tiempo) {
-      case '8 dias':
-       fechaDevolucion = add(reserva.fechareserva, { days: 8 });
-        break;
-      case '15 dias':
-       fechaDevolucion = add(reserva.fechareserva, { days: 15 });
-        break;
-      case '1 mes':
-       fechaDevolucion = add(reserva.fechareserva, { months: 1 });
-        break;
-      default:
-        return res.status(400).json({ message: 'El tiempo de devolución no es válido' });
+
+
+    if (!(Number.isInteger(time))  || !(time >= 0) || !(time === 8 || time === 15 || time === 30)) 
+    {
+        return res.status(400).
+        send({message : 'El tiempo indicado debe ser uno de los siguientes números enteros: 8, 15, 30.'});
     }
+    const fechaDevolucion = add(reserva.fechareserva, {days: time});
   
   
     reserva.fechadevolucion = fechaDevolucion;
