@@ -14,11 +14,12 @@ const booksdata = require('../controllers/books.data.js');
 const sendEmailToResetPassword = require('../controllers/user-password.controller.js');
 const changePassword = require('../controllers/change-password.controller.js');
 const validarCod = require('../controllers/codigo-verificacion.js');
-const {searchByAuthor, searchByGenre, searchByTitleDifused, searchByAnioPublicacion } = require('../controllers/search.js');
+const {searchByAuthor, searchByGenre, searchByTitleDifused, searchByAnioPublicacion, searchCombined } = require('../controllers/search.js');
 const obtenerInfoReserva = require('../controllers/infoReserva.js');
 const actualizarFechaDevolucion = require('../controllers/EditReserva.js');
 const booking = require('../controllers/bookings.js');
-const { searchCombined } = require('../controllers/FiltroCombinado.js');
+//const { searchCombined } = require('../controllers/FiltroCombinado.js');
+const obtenerHistorialReservas = require('../controllers/Historeservas.js');
 
 
 router.post('/register', register);
@@ -26,15 +27,18 @@ router.put('/updateUser/:username',userExtractor, updateController.updateUserDat
 router.post('/send/email', sendEmailToResetPassword);
 router.post('/verificacion', validarCod);
 router.post('/reset', changePassword);
-router.get('/genero/:genero',searchByGenre);
-router.get('/autor/:autor',searchByAuthor);
-router.get('/aniopublicacion/:aniopublicacion', searchByAnioPublicacion);
-router.get('/buscar/:genero/:autor/:titulo/:aniopublicacion', searchCombined);
+router.get('/historeservas/:usuario', obtenerHistorialReservas);
+
 
 // la busqueda por autor ya que contiene varias palabras se debe recibir un post con el titulo
 // en el cuerpo de la peticion si se envia como parametro de la url causaria problemas 
 // al encontrar espacios entre estos.
 router.post('/search/title',searchByTitleDifused);
+router.get('/genero/:genero',searchByGenre);
+router.get('/autor/:autor',searchByAuthor);
+router.get('/aniopublicacion/:aniopublicacion', searchByAnioPublicacion);
+router.post('/search/combined', searchCombined);
+
 
 routerlogin.post('/api/login', loggin);
 
