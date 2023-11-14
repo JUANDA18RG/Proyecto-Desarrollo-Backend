@@ -18,6 +18,7 @@ const {searchByAuthor, searchByGenre, searchByTitleDifused, searchByAnioPublicac
 const obtenerInfoReserva = require('../controllers/infoReserva.js');
 const actualizarFechaDevolucion = require('../controllers/EditReserva.js');
 const booking = require('../controllers/bookings.js');
+const { searchCombined } = require('../controllers/FiltroCombinado.js');
 
 
 router.post('/register', register);
@@ -28,6 +29,7 @@ router.post('/reset', changePassword);
 router.get('/genero/:genero',searchByGenre);
 router.get('/autor/:autor',searchByAuthor);
 router.get('/aniopublicacion/:aniopublicacion', searchByAnioPublicacion);
+router.get('/buscar/:genero/:autor/:titulo/:aniopublicacion', searchCombined);
 
 // la busqueda por autor ya que contiene varias palabras se debe recibir un post con el titulo
 // en el cuerpo de la peticion si se envia como parametro de la url causaria problemas 
