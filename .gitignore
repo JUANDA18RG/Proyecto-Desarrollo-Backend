@@ -22,5 +22,4 @@ dist-ssr
 *.sln
 *.sw?
 .env
-.pem
-```
+/certs/DigiCertGlobalRootCA.crt.pem
