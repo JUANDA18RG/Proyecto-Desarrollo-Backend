@@ -40,3 +40,11 @@ async function actualizarFechaDevolucion(req, res) {
 }
 
 module.exports = actualizarFechaDevolucion;
+
+
+// falta implementar funcion que se ejecute cada dia temprano verificando
+// si hay reservas vencidas y cambiar su estado a vencido, tambien si las reservas vencidas
+// estaban en estado de reservado, se debe sumar 1 a el libro reservado para que se ponga disponible
+// y ademas poner el estado de la reserva de nuevo en devuelto ya que no fue por el libro que pidió.
+// Verificar que el libro no este en estado devuelto cuando se pase el tiempo de devolución
+// para que no se cambie el estado a vencido ya que ya ha sido devuelto.
