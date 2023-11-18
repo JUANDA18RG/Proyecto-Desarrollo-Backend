@@ -15,7 +15,7 @@ app.use(express.static('src/assets'));
 
 //routes
 
-app.set('port', 4000 || process.env.PORT);
+app.set('port', process.env.PORT || 4000);
 
 app.use(express.json());
 app.use(cors({
