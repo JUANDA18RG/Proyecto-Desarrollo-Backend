@@ -23,9 +23,9 @@ async function actualizarFechaDevolucion(req, res) {
         return res.status(400).
         send({message : 'El tiempo indicado debe ser uno de los siguientes números enteros: 8, 15, 30.'});
     }
-    const fechaDevolucion = add(reserva.fechareserva, {days: time});
-  
-  
+    let fechaDevolucion = add(reserva.fechareserva, {days: time});
+
+
     reserva.fechadevolucion = fechaDevolucion;
     fechaDevolucion = fechaDevolucion.toISOString().split('T')[0];
     await fsql.updateFechaDevolucion(reserva.id, fechaDevolucion); // función que actualiza la reserva en la base de datos
