@@ -20,6 +20,7 @@ const actualizarFechaDevolucion = require('../controllers/EditReserva.js');
 const booking = require('../controllers/bookings.js');
 //const { searchCombined } = require('../controllers/FiltroCombinado.js');
 const obtenerHistorialReservas = require('../controllers/Historeservas.js');
+const realizarComentario = require('../controllers/comentarios.js');
 
 
 router.post('/register', register);
@@ -55,3 +56,5 @@ routerReserva.get('/:id', obtenerInfoReserva);
 // al  realizar esta peticion debes enviar tambien el token de autorizacion
 routerReserva.put('/EditarReserva',userExtractor, actualizarFechaDevolucion);
 module.exports = {router, routerlogin, routerReserva};
+
+router.post('/comentarios', userExtractor, realizarComentario);
