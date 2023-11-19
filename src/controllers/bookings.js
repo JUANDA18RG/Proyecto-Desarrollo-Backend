@@ -29,7 +29,12 @@ async function booking (req, res)
     {
         return res.status(400).send({message : 'El libro no existe'});
     }
+    if(bookExist.copiasdisponibles === 0)
+    {
+        return res.status(400).send({message : 'No hay copias disponibles de este libro'});
+    }
 
+    
     const bookingExist = await existReserva(username, book);
     if(bookingExist)
     {
@@ -48,7 +53,7 @@ async function booking (req, res)
 
     db.one('INSERT INTO reserva (estado, fechaReserva, fechaDevolucion, libro, usuario) VALUES($1, $2, $3, $4, $5) RETURNING id' , ['Reservado', fechaReserva, fechaDevolucion, book, username])
     .then(resultado => {
-        db.none('UPDATE libro SET copiasDisponibles = copiasDisponibles - 1 WHERE ISBN in (select ISBN from reserva where libro = $1 and usuario = $2)', [book, username]);
+        db.none('UPDATE libro SET copiasDisponibles = copiasDisponibles - 1, cantreservas = cantreservas + 1 WHERE ISBN in ($1)', [book]);
         return res.status(200).send({id: resultado.id, message: 'La reserva fue realizada exitosamente' });
     }).
     catch(error=>
