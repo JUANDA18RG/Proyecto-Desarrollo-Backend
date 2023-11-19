@@ -202,6 +202,23 @@ const getBookByISBN = async (ISBN) =>
     }
 }
 
+const existReserva = async (user, libro) =>
+{
+    try
+    {
+        const book = await db.oneOrNone('SELECT * FROM RESERVA WHERE USUARIO = $1 and LIBRO = $2 and estado in ($3, $4);', [user, libro, 'Reservado', 'Vencido']);
+        if(book)
+        {
+            return true;
+        }
+    }
+    catch(error)
+    {
+        return error;
+    }
+
+}
+
 // llamado a las funciones
 module.exports = {
     getallUsername,
@@ -215,5 +232,6 @@ module.exports = {
     getInfoReserva,
     getReservaById,
     updateFechaDevolucion,
-    getBookByISBN
+    getBookByISBN,
+    existReserva
 }

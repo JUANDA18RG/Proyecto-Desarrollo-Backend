@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const pgp = require('pg-promise')();
 require('dotenv').config();
-
+/*
 const db = pgp({
   user: process.env.POSTGRES_USER,
   host: process.env.POSTGRES_HOST,
@@ -13,16 +13,16 @@ const db = pgp({
     ca: fs.readFileSync(path.join(__dirname, '..', 'certs', 'DigiCertGlobalRootCA.crt.pem')).toString()
   },
   port: 5432,
-});
+});*/
 
-/*
+
 const db = pgp({
   user: 'postgres',
   host: process.env.HOST,
   database: process.env.DATABASE,
   password: process.env.PASSWORD,
   port: 5432,
-})*/
+})
 
 
 
