@@ -20,7 +20,7 @@ const loggin = async (request, response) => {
             correo: user[0].correo,
         }
 
-        const token = jwt.sign(userForToken, process.env.SECRET,{expiresIn: '1h'} ); // firmar el token con un objeto y una palabra secreta
+        const token = jwt.sign(userForToken, process.env.SECRET,{expiresIn: '1d'} ); // firmar el token con un objeto y una palabra secreta
         
 
         response.status(200).send({

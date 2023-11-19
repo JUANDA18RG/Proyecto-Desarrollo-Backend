@@ -4,7 +4,7 @@ const cors = require('cors');
 const router = require('./routes/task.routes');
 const app = express();
 const handlerError = require('./handlerError.js');
-const cronReserva = require('./cron_reserva.js');
+const cronReserva = require('./cron_functions.js');
 const fsql = require('./controllers/task.controllers.js');
 
 app.use(cors({
