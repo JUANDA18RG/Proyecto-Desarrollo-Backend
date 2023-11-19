@@ -4,6 +4,8 @@ const cors = require('cors');
 const router = require('./routes/task.routes');
 const app = express();
 const handlerError = require('./handlerError.js');
+const cronReserva = require('./cron_reserva.js');
+const fsql = require('./controllers/task.controllers.js');
 
 app.use(cors({
   origin: 'http://localhost:5173' // solo permite recibir de esta funcion
@@ -26,6 +28,16 @@ app.use(router.routerlogin);
 app.use('/reserva', router.routerReserva);
 
 app.use(handlerError);
+
+// Ejecutar la función a la 1:00 AM todos los días
+cronReserva();
+
+// funcion que se ejecuta al iniciar servidor para pruebas de desarrollo
+fsql.updateStates().then(() => {
+  console.log('Estados actualizados');
+}).catch((error) => {
+  console.error('Error al actualizar estados:', error);
+});
 
 app.listen(app.get('port'), () => {
   console.log(`Server is running on port ${app.get('port')}`);

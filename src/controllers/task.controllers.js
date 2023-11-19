@@ -219,6 +219,49 @@ const existReserva = async (user, libro) =>
 
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const updateStates = async () => {
+    try {
+        await db.tx(async t => {
+            // establece el estado entregados a Vencido
+            await t.none("UPDATE reserva SET estado = 'Vencido' where estado = $1 and fechaDevolucion <= CURRENT_DATE; ",['Entregado']);
+            // establece el estado reservado a cancelado, suma 1 a disponibles
+            await t.none(`UPDATE libro SET copiasDisponibles = copiasDisponibles + 1 where isbn IN (SELECT libro FROM reserva WHERE estado = $1 and fechaDevolucion <= CURRENT_DATE)`, ['Reservado']);          
+            await t.none("UPDATE reserva SET estado = $1 where estado = $2 and fechaDevolucion <= CURRENT_DATE; ",['Cancelado','Reservado']);
+        });
+        return true;
+    } catch (error) {
+        console.error('Error al actualizar el estado de la reserva', error);
+        throw new Error(error.message);
+    }
+
+}
+
 // llamado a las funciones
 module.exports = {
     getallUsername,
@@ -233,5 +276,6 @@ module.exports = {
     getReservaById,
     updateFechaDevolucion,
     getBookByISBN,
-    existReserva
+    existReserva,
+    updateStates
 }
