@@ -234,6 +234,7 @@ const commentEx = async (user, libro) =>
     }
 }
 
+
 // llamado a las funciones
 module.exports = {
     getallUsername,
@@ -249,5 +250,5 @@ module.exports = {
     updateFechaDevolucion,
     getBookByISBN,
     existReserva,
-    commentEx
+    commentEx,
 }

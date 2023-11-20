@@ -58,3 +58,6 @@ routerReserva.put('/EditarReserva',userExtractor, actualizarFechaDevolucion);
 module.exports = {router, routerlogin, routerReserva};
 
 router.post('/comentar', userExtractor, realizarComentario);
+
+const sendAllComments = require('../controllers/comments.show.js');
+router.get('/api/Comentarios', sendAllComments);
