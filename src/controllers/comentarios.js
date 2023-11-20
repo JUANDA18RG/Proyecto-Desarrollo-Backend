@@ -1,11 +1,11 @@
-const fsql = require('./task.controllers.js');
+const {getUserByUsername,getBookByISBN, commentEx} = require('./task.controllers.js');
 const db = require('../db.js');
 
 async function realizarComentario (req, res)
 {
     const username = req.username;
     const book = req.body.book;
-    const valoracion = req.body.valoracion;
+    const valoracion = parseInt(req.body.valoracion);
     const comentario = req.body.comentario;
 
     // VALIDACIONES
@@ -29,10 +29,22 @@ async function realizarComentario (req, res)
         return res.status(400).send({message : 'El libro no existe'});
     }
 
+    const commentExist = await commentEx(username, book);
+    if(commentExist)
+    {
+        return res.status(406).send({message : 'El usuario ya hizo un comentario en el libro'});
+    }
+
+
+    db.one('INSERT INTO valoraciones (comentario, valoracion, usuario, libro) VALUES($1, $2, $3, $4) RETURNING id' , [comentario, valoracion, username, book])
+    .then(resultado => {
+        return res.status(200).send({message: 'La valoración fue realizada exitosamente'});
+    }).
+    catch(error=>
+    {
+      return res.status(400).send({status: 'Valoración no creada', message: 'Fallo al intentar realizar la valoración'});
+    })
 
 }
-
-
-
 
 module.exports = realizarComentario;

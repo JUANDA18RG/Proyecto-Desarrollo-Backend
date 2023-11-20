@@ -57,4 +57,4 @@ routerReserva.get('/:id', obtenerInfoReserva);
 routerReserva.put('/EditarReserva',userExtractor, actualizarFechaDevolucion);
 module.exports = {router, routerlogin, routerReserva};
 
-router.post('/comentarios', userExtractor, realizarComentario);
+router.post('/comentar', userExtractor, realizarComentario);
