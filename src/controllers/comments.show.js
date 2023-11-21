@@ -6,7 +6,7 @@ const sendAllComments = async (req, res) => {
     {
         db.any('SELECT * FROM valoraciones WHERE libro = $1 ',[isbn])
         .then(resultado => {
-            const val = JSON.stringify(resultado);
+            const val = resultado;
             return res.status(200).send({message: "Los comentarios se han enviado correctamente", val});
             
         })
