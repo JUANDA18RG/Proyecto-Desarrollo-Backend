@@ -22,6 +22,8 @@ const booking = require('../controllers/bookings.js');
 //const { searchCombined } = require('../controllers/FiltroCombinado.js');
 const obtenerHistorialReservas = require('../controllers/Historeservas.js');
 const realizarComentario = require('../controllers/comentarios.js');
+const {obtenerHistorialValoraciones,eliminarValoracion,} = require('../controllers/HistoValora.js');
+
 
 
 router.post('/register', register);
@@ -30,6 +32,8 @@ router.post('/send/email', sendEmailToResetPassword);
 router.post('/verificacion', validarCod);
 router.post('/reset', changePassword);
 router.get('/historeservas/:usuario', obtenerHistorialReservas);
+router.get('/histovaloraciones/:usuario', obtenerHistorialValoraciones);
+router.delete('/valoraciones/:id', eliminarValoracion);
 
 
 // la busqueda por autor ya que contiene varias palabras se debe recibir un post con el titulo
