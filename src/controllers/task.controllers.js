@@ -216,7 +216,22 @@ const existReserva = async (user, libro) =>
     {
         return error;
     }
+}
 
+const commentEx = async (user, libro) =>
+{
+    try
+    {
+        const valoracion = await db.oneOrNone('SELECT * FROM VALORACIONES WHERE USUARIO = $1 and LIBRO = $2', [user, libro]);
+        if(valoracion)
+        {
+            return true;
+        }
+    }
+    catch(error)
+    {
+        return error;
+    }
 }
 
 
@@ -310,5 +325,6 @@ module.exports = {
     updateStates,
     updateValoracion,
     updateComentario,
-    getValoracion
+    getValoracion,
+    commentEx,
 }

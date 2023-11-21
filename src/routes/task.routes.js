@@ -23,6 +23,8 @@ const booking = require('../controllers/bookings.js');
 const obtenerHistorialReservas = require('../controllers/Historeservas.js');
 const realizarComentario = require('../controllers/comentarios.js');
 const updateCommentAndRating = require('../controllers/EditComent-valoraciones.js');
+const {obtenerHistorialValoraciones,eliminarValoracion,} = require('../controllers/HistoValora.js');
+
 
 
 router.post('/register', register);
@@ -31,6 +33,8 @@ router.post('/send/email', sendEmailToResetPassword);
 router.post('/verificacion', validarCod);
 router.post('/reset', changePassword);
 router.get('/historeservas/:usuario', obtenerHistorialReservas);
+router.get('/histovaloraciones/:usuario', obtenerHistorialValoraciones);
+router.delete('/valoraciones/:id', eliminarValoracion);
 
 
 // la busqueda por autor ya que contiene varias palabras se debe recibir un post con el titulo
@@ -55,10 +59,16 @@ routerReserva.post('/booking', userExtractor, booking);
 
 routerReserva.get('/:id', obtenerInfoReserva);
 
-// al  realizar esta peticion debes enviar tambien el token de autorizacion
+// al  realizar estas peticion debes enviar tambien el token de autorizacion
 routerReserva.put('/EditarReserva',userExtractor, actualizarFechaDevolucion);
-routerComentarios.post('/crear', userExtractor, realizarComentario);
 routerComentarios.put('/actualizar', userExtractor, updateCommentAndRating);
 
+
+
+
+routerComentarios.post('/comentar', userExtractor, realizarComentario); 
+
+const sendAllComments = require('../controllers/comments.show.js');
+routerComentarios.get('/enviarComentarios', sendAllComments);
 
 module.exports = {router, routerlogin, routerReserva, routerComentarios};
