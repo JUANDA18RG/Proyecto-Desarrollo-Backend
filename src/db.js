@@ -1,7 +1,8 @@
-const fs = require('fs');
+const fs = require('fs'); // Agrega esta línea
 const path = require('path');
 const pgp = require('pg-promise')();
 require('dotenv').config();
+
 const db = pgp({
   user: process.env.POSTGRES_USER,
   host: process.env.POSTGRES_HOST,
@@ -14,5 +15,5 @@ const db = pgp({
   port: 5432,
 });
 
-
 module.exports = db;
+
