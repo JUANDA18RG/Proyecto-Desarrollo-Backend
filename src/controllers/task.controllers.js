@@ -262,6 +262,36 @@ const updateStates = async () => {
 
 }
 
+const getValoracion = async (isbn, username) => {
+    try {
+        const valoracion = await db.oneOrNone('SELECT * FROM valoraciones WHERE libro = $1 and usuario = $2', [isbn, username]);
+        return valoracion;
+    } catch (error) {
+        console.error('Error al obtener la valoracion', error);
+        throw new Error(error.message);
+    }
+}
+
+const updateValoracion = async (valoracion, isbn, username) => {
+    try {
+        await db.none('UPDATE valoraciones SET valoracion = $1 WHERE libro = $2 and usuario = $3', [valoracion, isbn, username]);
+        return true;
+    } catch (error) {
+        console.error('Error al actualizar la valoracion', error);
+        throw new Error(error.message);
+    }
+}
+
+const updateComentario = async (comentario, isbn, username) => {
+    try {
+        await db.none('UPDATE valoraciones SET comentario = $1 WHERE libro = $2 and usuario = $3', [comentario, isbn, username]);
+        return true;
+    } catch (error) {
+        console.error('Error al actualizar el comentario', error);
+        throw new Error(error.message);
+    }
+}
+
 // llamado a las funciones
 module.exports = {
     getallUsername,
@@ -277,5 +307,8 @@ module.exports = {
     updateFechaDevolucion,
     getBookByISBN,
     existReserva,
-    updateStates
+    updateStates,
+    updateValoracion,
+    updateComentario,
+    getValoracion
 }

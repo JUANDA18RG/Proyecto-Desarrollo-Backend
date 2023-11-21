@@ -26,6 +26,7 @@ app.use(cors({
 app.use(router.router);
 app.use(router.routerlogin);
 app.use('/reserva', router.routerReserva);
+app.use('/comentarios', router.routerComentarios);
 
 app.use(handlerError);
 

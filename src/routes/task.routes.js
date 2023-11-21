@@ -3,6 +3,7 @@ const userExtractor = require('./userExtractor');
 const routerlogin = express.Router();
 const loggin = require('../controllers/login.js');
 const routerReserva = express.Router();
+const routerComentarios = express.Router();
 
 const router = express.Router();
 router.use(express.json());
@@ -21,6 +22,7 @@ const booking = require('../controllers/bookings.js');
 //const { searchCombined } = require('../controllers/FiltroCombinado.js');
 const obtenerHistorialReservas = require('../controllers/Historeservas.js');
 const realizarComentario = require('../controllers/comentarios.js');
+const updateCommentAndRating = require('../controllers/EditComent-valoraciones.js');
 
 
 router.post('/register', register);
@@ -55,6 +57,8 @@ routerReserva.get('/:id', obtenerInfoReserva);
 
 // al  realizar esta peticion debes enviar tambien el token de autorizacion
 routerReserva.put('/EditarReserva',userExtractor, actualizarFechaDevolucion);
-module.exports = {router, routerlogin, routerReserva};
+routerComentarios.post('/crear', userExtractor, realizarComentario);
+routerComentarios.put('/actualizar', userExtractor, updateCommentAndRating);
 
-router.post('/comentarios', userExtractor, realizarComentario);
+
+module.exports = {router, routerlogin, routerReserva, routerComentarios};
