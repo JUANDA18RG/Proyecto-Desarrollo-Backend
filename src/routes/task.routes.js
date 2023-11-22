@@ -61,6 +61,9 @@ routerReserva.get('/:id', obtenerInfoReserva);
 
 // al  realizar estas peticion debes enviar tambien el token de autorizacion
 routerReserva.put('/EditarReserva',userExtractor, actualizarFechaDevolucion);
+
+
+// actualizar comentario y valoracion
 routerComentarios.put('/actualizar', userExtractor, updateCommentAndRating);
 
 

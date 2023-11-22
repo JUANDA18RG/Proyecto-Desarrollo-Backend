@@ -1,7 +1,7 @@
 const db = require('../db.js');
 
 const sendAllComments = async (req, res) => {
-    const isbn = req.body.isbn;
+    const isbn = req.query.isbn;
     try
     {
         db.any('SELECT * FROM valoraciones WHERE libro = $1 ',[isbn])
