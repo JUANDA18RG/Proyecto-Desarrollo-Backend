@@ -24,6 +24,7 @@ const obtenerHistorialReservas = require('../controllers/Historeservas.js');
 const realizarComentario = require('../controllers/comentarios.js');
 const updateCommentAndRating = require('../controllers/EditComent-valoraciones.js');
 const {obtenerHistorialValoraciones,eliminarValoracion,} = require('../controllers/HistoValora.js');
+const deleteUser = require('../controllers/deleteUser.js');
 
 
 
@@ -73,5 +74,7 @@ routerComentarios.post('/comentar', userExtractor, realizarComentario);
 
 const sendAllComments = require('../controllers/comments.show.js');
 routerComentarios.get('/enviarComentarios', sendAllComments);
+
+router.delete('/deleteUser/:username', userExtractor, deleteUser);
 
 module.exports = {router, routerlogin, routerReserva, routerComentarios};
