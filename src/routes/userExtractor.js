@@ -17,6 +17,7 @@ module.exports = (request, response,next) => {
         return response.status(401).json({ error: 'token missing or invalid'});
     }
     const {username, correo} = decodedToken;
+
     request.username = username;
     request.correo = correo;
    }catch(error){

@@ -18,6 +18,7 @@ const getallUsername = async (username) =>
     catch(error)
     {
         console.error('Hay mas de dos usuarios con el mismo username', error);
+        throw error;
     }
 }
 
@@ -241,29 +242,6 @@ const commentEx = async (user, libro) =>
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const updateStates = async () => {
     try {
         await db.tx(async t => {
@@ -311,6 +289,25 @@ const updateComentario = async (comentario, isbn, username) => {
     }
 }
 
+
+
+// funcion que toma el username del usuario y elimina cualquier incidencia que tenga
+const delete_in_user = async (username) => {
+    
+    try{
+        await db.tx(async t => {
+            await t.none('DELETE FROM valoraciones WHERE usuario = $1', [username]);
+            await t.none('DELETE FROM reserva WHERE usuario = $1', [username]);
+            await t.none('DELETE FROM usuario WHERE username = $1', [username]);
+            await t.none('DELETE FROM persona WHERE username = $1', [username]);
+        });
+    }catch(error){
+        console.error('Error al borrar incidencias', error);
+        throw new Error(error.message);
+    }
+
+}
+
 // llamado a las funciones
 module.exports = {
     getallUsername,
@@ -331,4 +328,5 @@ module.exports = {
     updateComentario,
     getValoracion,
     commentEx,
+    delete_in_user
 }

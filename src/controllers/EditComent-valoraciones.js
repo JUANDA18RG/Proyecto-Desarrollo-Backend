@@ -7,7 +7,7 @@ const updateCommentAndRating = async (req, res) => {
         const username = req.username;
 
         const valoraciones = await fsql.getValoracion(isbn,username);
-        console.log(valoraciones);
+        //console.log(valoraciones);
         if(!valoraciones){
             return res.status(400).json({ message: `la valoracion a este libro del usuario ${username} no existe`});
         }
