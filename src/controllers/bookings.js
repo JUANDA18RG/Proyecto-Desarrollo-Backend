@@ -60,6 +60,7 @@ async function booking (req, res)
     {
       return res.status(400).send({status: 'Reserva no creada', message: 'Fallo al intentar realizar la reserva'});
     })
+
 }
 
 module.exports = booking;
