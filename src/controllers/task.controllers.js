@@ -33,7 +33,7 @@ const getUserByCorreo = async (correo) =>
             const admin = await db.oneOrNone('SELECT * FROM administrador WHERE username = $1', [user.username]);
             if(admin)
             {
-                return [user, true]; // si es true significa que la persona es admin
+                return [user, true, admin]; // si es true significa que la persona es admin
             }
             return [user, false]; // si es false significa que la persona es usuario
         }
@@ -193,6 +193,10 @@ const getBookByISBN = async (ISBN) =>
         if(book)
         {
             return book;
+        }
+        else
+        {
+            return null;
         }
     }
     catch(error)
