@@ -8,11 +8,10 @@ async function deleteB(req,res)
     book = req.body.book;
     const isAdmin = await getUserByCorreo(correo);
     const existBook = await getBookByISBN(book);
-    console.log(isAdmin);
 
-    if(isAdmin[1] === false || isAdmin[2].jefe != null)
+    if(isAdmin[1] === false)
     {
-        return res.status(400).send({message: 'El usuario no es un super admin'});
+        return res.status(400).send({message: 'El usuario no es un administrador'});
     }
 
     if(isAdmin === null)
