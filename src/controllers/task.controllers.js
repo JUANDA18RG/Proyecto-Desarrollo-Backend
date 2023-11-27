@@ -308,6 +308,28 @@ const delete_in_user = async (username) => {
 
 }
 
+const getallUsers = async () => {
+
+    try{ 
+        const users = await db.any('SELECT username, nombres, apellidos, correo FROM persona where username in (SELECT username FROM usuario)');
+        return users;
+    }catch(error){
+        console.error('Error al obtener los usuarios', error);
+        throw new Error(error.message);
+    }
+
+}
+
+const getUser = async (username) => {
+    try {
+        const user = await db.oneOrNone('SELECT username, nombres, apellidos, correo FROM persona WHERE username in (SELECT username FROM usuario where username = $1)', [username]);
+        return user;
+    } catch (error) {
+        console.error('Error al obtener el usuario', error);
+        throw new Error(error.message);
+    }
+}
+
 // llamado a las funciones
 module.exports = {
     getallUsername,
@@ -328,5 +350,7 @@ module.exports = {
     updateComentario,
     getValoracion,
     commentEx,
-    delete_in_user
+    delete_in_user,
+    getallUsers,
+    getUser
 }
