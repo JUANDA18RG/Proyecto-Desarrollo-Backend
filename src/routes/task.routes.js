@@ -26,6 +26,7 @@ const updateCommentAndRating = require('../controllers/EditComent-valoraciones.j
 const {obtenerHistorialValoraciones,eliminarValoracion,} = require('../controllers/HistoValora.js');
 const deleteUser = require('../controllers/deleteUser.js');
 const deleteB = require('../controllers/deleteBooks.js');
+const {return_usuarios, return_usuario}= require('../controllers/returnUsuarios.js');
 
 
 
@@ -78,5 +79,8 @@ routerComentarios.get('/enviarComentarios', sendAllComments);
 
 router.delete('/deleteUser/:username', userExtractor, deleteUser);
 router.delete('/BorrarLibros', userExtractor, deleteB);
+
+router.get('/returnUsuarios', return_usuarios);
+router.get('/returnUsuario/:username', return_usuario);
 
 module.exports = {router, routerlogin, routerReserva, routerComentarios};
