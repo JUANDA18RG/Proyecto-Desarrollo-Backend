@@ -26,6 +26,7 @@ const updateCommentAndRating = require('../controllers/EditComent-valoraciones.j
 const {obtenerHistorialValoraciones,eliminarValoracion,} = require('../controllers/HistoValora.js');
 const deleteUser = require('../controllers/deleteUser.js');
 const deleteB = require('../controllers/deleteBooks.js');
+const completeForm = require('../controllers/completeFormAdmin.js');
 
 
 
@@ -48,7 +49,7 @@ router.get('/autor/:autor',searchByAuthor);
 router.get('/aniopublicacion/:aniopublicacion', searchByAnioPublicacion);
 router.post('/search/combined', searchCombined);
 
-
+router.post('/completarFormulario', userExtractor,completeForm);
 routerlogin.post('/api/login', loggin);
 
 // mostrar todos los libros para la pagina despues de logearse.
@@ -68,10 +69,8 @@ routerReserva.put('/EditarReserva',userExtractor, actualizarFechaDevolucion);
 // actualizar comentario y valoracion
 routerComentarios.put('/actualizar', userExtractor, updateCommentAndRating);
 
-
-
-
 routerComentarios.post('/comentar', userExtractor, realizarComentario); 
+
 
 const sendAllComments = require('../controllers/comments.show.js');
 routerComentarios.get('/enviarComentarios', sendAllComments);

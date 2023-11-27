@@ -9,15 +9,14 @@ async function deleteB(req,res)
     const isAdmin = await getUserByCorreo(correo);
     const existBook = await getBookByISBN(book);
 
+    if(isAdmin === null)
+    {
+        return res.status(400).send({message: 'El usuario no existe'});
+    }
 
     if( isAdmin[1] === false)
     {
         return res.status(400).send({message: 'El usuario no es un administrador'});
-    }
-
-    if(isAdmin === null)
-    {
-        return res.status(400).send({message: 'El usuario no existe'});
     }
 
     if(existBook === null)
