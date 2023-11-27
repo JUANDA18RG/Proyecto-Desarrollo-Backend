@@ -31,7 +31,6 @@ async function booking (req, res)
     }
     if(bookExist.copiasdisponibles === 0)
     {
-        db.none('UPDATE ')
         return res.status(400).send({message : 'No hay copias disponibles de este libro'});
     }
 
@@ -61,6 +60,7 @@ async function booking (req, res)
     {
       return res.status(400).send({status: 'Reserva no creada', message: 'Fallo al intentar realizar la reserva'});
     })
+
 }
 
 module.exports = booking;
