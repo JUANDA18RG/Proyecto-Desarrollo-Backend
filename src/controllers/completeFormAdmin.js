@@ -17,7 +17,7 @@ async function completeForm (req, res)
         return res.status(400).send({message: 'El usuario no existe'});
     }
 
-    if( isAdmin[1] == false || isAdmin[2].jefe==null)
+    if( isAdmin[1] == false)
     {
         return res.status(400).send({message: 'El usuario no es un administrador'});
     }
@@ -67,7 +67,7 @@ async function verifyForm (req,res)
             return res.status(400).send({message: 'El usuario no existe'});
         }
 
-        if( isAdmin[1] == false || isAdmin[2].jefe==null)
+        if( isAdmin[1] == false)
         {
             return res.status(400).send({message: 'El usuario no es un administrador'});
         }
