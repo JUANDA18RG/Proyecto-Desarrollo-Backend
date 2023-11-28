@@ -22,11 +22,12 @@ const loggin = async (request, response) => {
 
         const token = jwt.sign(userForToken, process.env.SECRET,{expiresIn: '1d'} ); // firmar el token con un objeto y una palabra secreta
         
-
+        isSuperAdmin = (user[1] && !user[2].jefe) ? true : false;
         response.status(200).send({
             username: user[0].username,
             correo: user[0].correo,
             isAdmin: user[1],
+            isSuperAdmin,
             token
         });
 
