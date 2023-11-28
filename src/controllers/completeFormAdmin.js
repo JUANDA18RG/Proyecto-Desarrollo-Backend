@@ -12,7 +12,6 @@ async function completeForm (req, res)
     
     const isAdmin =  await getUserByCorreo(correo);
 
-    console.log(isAdmin);
     if(isAdmin === null)
     {
         return res.status(400).send({message: 'El usuario no existe'});
@@ -55,4 +54,42 @@ async function completeForm (req, res)
     
 }
 
-module.exports = completeForm;
+
+async function verifyForm (req,res)
+{
+    try
+    {
+        const correo = req.body.correo;
+        const isAdmin =  await getUserByCorreo(correo);
+
+        if(isAdmin === null)
+        {
+            return res.status(400).send({message: 'El usuario no existe'});
+        }
+
+        if( isAdmin[1] == false || isAdmin[2].jefe==null)
+        {
+            return res.status(400).send({message: 'El usuario no es un administrador'});
+        }
+
+        db.one('SELECT * FROM persona WHERE correo = $1',[correo])
+        .then(resultado => 
+            {
+                if(resultado.nombres == null & resultado.apellidos == null)
+                {
+                    return res.status(200).send({form: true});
+                }
+                else
+                {
+                    return res.status(200).send({form: false});
+                }
+            })
+    }
+    catch(error)
+    {
+        return res.status(500).json({message: 'Error al verificar formulario'});
+    }
+    
+}
+
+module.exports = {completeForm, verifyForm};

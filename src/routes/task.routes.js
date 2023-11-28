@@ -27,7 +27,7 @@ const {obtenerHistorialValoraciones,eliminarValoracion,} = require('../controlle
 const deleteUser = require('../controllers/deleteUser.js');
 const deleteB = require('../controllers/deleteBooks.js');
 const {return_usuarios, return_usuario}= require('../controllers/returnUsuarios.js');
-const completeForm = require('../controllers/completeFormAdmin.js');
+const {completeForm,verifyForm} = require('../controllers/completeFormAdmin.js');
 
 
 
@@ -51,6 +51,7 @@ router.get('/aniopublicacion/:aniopublicacion', searchByAnioPublicacion);
 router.post('/search/combined', searchCombined);
 
 router.post('/completarFormulario', userExtractor,completeForm);
+router.get('/completarFormulario', verifyForm);
 routerlogin.post('/api/login', loggin);
 
 // mostrar todos los libros para la pagina despues de logearse.
