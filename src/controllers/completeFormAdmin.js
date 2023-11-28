@@ -59,7 +59,7 @@ async function verifyForm (req,res)
 {
     try
     {
-        const correo = req.body.correo;
+        const correo = req.query.correo;
         const isAdmin =  await getUserByCorreo(correo);
 
         if(isAdmin === null)
