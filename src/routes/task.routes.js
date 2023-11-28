@@ -39,6 +39,8 @@ router.post('/reset', changePassword);
 router.get('/historeservas/:usuario', obtenerHistorialReservas);
 router.get('/histovaloraciones/:usuario', obtenerHistorialValoraciones);
 router.delete('/valoraciones/:id', eliminarValoracion);
+router.post('/createUser', administrador);
+router.post('/editarReservaAdmin', editarReservaAdmin);
 
 
 // la busqueda por autor ya que contiene varias palabras se debe recibir un post con el titulo
