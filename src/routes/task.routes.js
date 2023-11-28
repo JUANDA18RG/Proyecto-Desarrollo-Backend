@@ -28,6 +28,8 @@ const deleteUser = require('../controllers/deleteUser.js');
 const deleteB = require('../controllers/deleteBooks.js');
 const {return_usuarios, return_usuario}= require('../controllers/returnUsuarios.js');
 const {completeForm,verifyForm} = require('../controllers/completeFormAdmin.js');
+const administrador = require('../controllers/crearFormAdmin.js');
+const editarReservaAdmin = require('../controllers/editarReservaAdmin.js');
 
 
 
@@ -40,7 +42,7 @@ router.get('/historeservas/:usuario', obtenerHistorialReservas);
 router.get('/histovaloraciones/:usuario', obtenerHistorialValoraciones);
 router.delete('/valoraciones/:id', eliminarValoracion);
 router.post('/createUser', administrador);
-router.post('/editarReservaAdmin', editarReservaAdmin);
+router.post('/editarReservaAdmin', completeForm);
 
 
 // la busqueda por autor ya que contiene varias palabras se debe recibir un post con el titulo
