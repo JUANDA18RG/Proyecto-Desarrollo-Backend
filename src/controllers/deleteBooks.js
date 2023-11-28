@@ -33,7 +33,7 @@ async function deleteB(req,res)
 
         await db.none('UPDATE reserva SET libro = null WHERE libro in ($1)', [book])
         await db.none('UPDATE valoraciones SET libro = null WHERE libro in ($1)',[book])
-        await db.none('DELETE FROM libro WHERE isbn in ($1)', [book])
+        db.none('DELETE FROM libro WHERE isbn in ($1)', [book])
         .then(resultado =>
             {
                 return res.status(200).send({message: "El libro ha sido eliminado correctamente."});
