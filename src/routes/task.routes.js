@@ -41,7 +41,7 @@ router.post('/reset', changePassword);
 router.get('/historeservas/:usuario', obtenerHistorialReservas);
 router.get('/histovaloraciones/:usuario', obtenerHistorialValoraciones);
 router.delete('/valoraciones/:id', eliminarValoracion);
-router.post('/createUser', administrador);
+router.post('/createUser', userExtractor, administrador);
 router.post('/editarReservaAdmin', completeForm);
 
 
