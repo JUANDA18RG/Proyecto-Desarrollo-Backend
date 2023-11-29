@@ -7,8 +7,8 @@ async function actualizarEstado (req, res)
 
   try 
   {
-    const { id, nuevoEstado } = req.body;
-    const username = req.username;
+    const {nuevoEstado } = req.body;
+    const id = req.params.id;
     const correo = req.correo;
     const reserva = await getReservaById(id);
     const isAdmin = await getUserByCorreo(correo);
@@ -36,7 +36,6 @@ async function actualizarEstado (req, res)
 
 
     const cambio = await cambiarEstadoReserva(reserva.id, nuevoEstado);
-    console.log(cambio);
 
     if(cambio)
     {
