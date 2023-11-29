@@ -29,7 +29,10 @@ const deleteB = require('../controllers/deleteBooks.js');
 const {return_usuarios, return_usuario}= require('../controllers/returnUsuarios.js');
 const {completeForm,verifyForm} = require('../controllers/completeFormAdmin.js');
 const administrador = require('../controllers/crearFormAdmin.js');
-const editarReservaAdmin = require('../controllers/editarReservaAdmin.js');
+const actualizarEstado = require('../controllers/editarReservaAdmin.js');
+
+
+
 
 
 
@@ -41,8 +44,9 @@ router.post('/reset', changePassword);
 router.get('/historeservas/:usuario', obtenerHistorialReservas);
 router.get('/histovaloraciones/:usuario', obtenerHistorialValoraciones);
 router.delete('/valoraciones/:id', eliminarValoracion);
-router.post('/createUser', administrador);
-router.post('/editarReservaAdmin', completeForm);
+router.post('/createUser', userExtractor, administrador);
+//router.get('/reservas', taskControllers.getAllReservas);
+router.put('/cambiarEstado/:id', userExtractor, actualizarEstado);
 
 
 // la busqueda por autor ya que contiene varias palabras se debe recibir un post con el titulo
@@ -53,7 +57,6 @@ router.get('/genero/:genero',searchByGenre);
 router.get('/autor/:autor',searchByAuthor);
 router.get('/aniopublicacion/:aniopublicacion', searchByAnioPublicacion);
 router.post('/search/combined', searchCombined);
-
 router.post('/completarFormulario', userExtractor,completeForm);
 router.get('/completarFormulario', verifyForm);
 routerlogin.post('/api/login', loggin);
