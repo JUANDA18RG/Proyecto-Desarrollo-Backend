@@ -8,11 +8,11 @@ const deleteUser = async (req, res) => {
   const username_to_delete = req.params.username;
 
   const user_to_delete = await fsql.getallUsername(username_to_delete);
-
+  console.log(user_to_delete);
   if(!user_to_delete){
     return res.status(404).json({message: 'Usuario no encontrado'});
   }
-
+  console.log('vfvdfvfvvf');
   if(user)
   {
     if(user[1])

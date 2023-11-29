@@ -301,6 +301,7 @@ const delete_in_user = async (username) => {
             await t.none('DELETE FROM usuario WHERE username = $1', [username]);
             await t.none('DELETE FROM persona WHERE username = $1', [username]);
         });
+        console.log('Incidencias borradas');
     }catch(error){
         console.error('Error al borrar incidencias', error);
         throw new Error(error.message);
