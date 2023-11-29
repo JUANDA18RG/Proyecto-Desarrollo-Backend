@@ -330,6 +330,19 @@ const getUser = async (username) => {
     }
 }
 
+const cambiarEstadoReserva = async (idreserva, nuevoestado) => {
+    try 
+    {
+        await db.none('UPDATE reserva set estado = $1 where id = $2', [nuevoestado, idreserva]);
+        return true;
+    }
+    catch (error) {
+        console.error('Error al obtener el usuario', error);
+        throw new Error(error.message);
+    }
+}
+
+
 // llamado a las funciones
 module.exports = {
     getallUsername,
@@ -352,5 +365,6 @@ module.exports = {
     commentEx,
     delete_in_user,
     getallUsers,
-    getUser
+    getUser,
+    cambiarEstadoReserva
 }

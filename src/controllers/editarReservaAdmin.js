@@ -1,28 +1,56 @@
 // Ruta para cambiar el estado de una reserva
-router.put('/cambiarEstadoReserva/:id', async (req, res) => {
-  const { id, nuevoEstado } = req.body;
-  const username = req.username;
+const {cambiarEstadoReserva, getUserByCorreo,getReservaById}= require('./task.controllers.js');
 
-  try {
-    const reserva = await taskControllers.getReservaById(id);
 
-    if (!reserva) {
+async function actualizarEstado (req, res)
+{ 
+
+  try 
+  {
+    const { id, nuevoEstado } = req.body;
+    const username = req.username;
+    const correo = req.correo;
+    const reserva = await getReservaById(id);
+    const isAdmin = await getUserByCorreo(correo);
+
+    if (isAdmin == null)
+    {
+      return res.status(400).send({message: 'El usuario no existe'});
+    }
+
+    if (!(isAdmin[1]))
+    {
+      return res.status(400).send({message: 'El usuario no es un administrador'});
+    }
+ 
+    if (!reserva) 
+    {
       return res.status(404).json({ message: 'Reserva no encontrada' });
-    } else if (reserva.usuario !== username) {
-      return res.status(400).json({ message: `La reserva solo puede ser modificada por su creador ${username}` });
     }
 
     // Validar que el nuevo estado sea válido
-    if (!['Reservado', 'Entregado', 'Vencido', 'Devuelto', 'Cancelado'].includes(nuevoEstado)) {
+    if (![ 'Entregado', 'Devuelto'].includes(nuevoEstado)) 
+    {
       return res.status(400).json({ message: 'Estado no válido' });
     }
 
-    // Actualizar el estado de la reserva en la base de datos
-    await taskControllers.cambiarEstadoReserva(reserva.id, nuevoEstado);
 
-    return res.status(200).json({ message: 'Cambio exitoso', nuevoEstado });
+    const cambio = await cambiarEstadoReserva(reserva.id, nuevoEstado);
+    console.log(cambio);
+
+    if(cambio)
+    {
+      return res.status(200).json({ message: 'Cambio exitoso', nuevoEstado });
+    }
+    else
+    {
+      return res.status(400).json({ message: 'Cambio no exitoso'});
+    }
+    
   } catch (error) {
     console.error('Error al usar la base de datos', error);
     return res.status(500).json({ message: 'Error al usar la base de datos' });
   }
-});
+}
+
+module.exports = actualizarEstado;
