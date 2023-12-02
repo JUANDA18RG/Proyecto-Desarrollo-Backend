@@ -12,7 +12,6 @@ const deleteUser = async (req, res) => {
   if(!user_to_delete){
     return res.status(404).json({message: 'Usuario no encontrado'});
   }
-  console.log('vfvdfvfvvf');
   if(user)
   {
     if(user[1])
@@ -30,4 +29,27 @@ const deleteUser = async (req, res) => {
     }
 }
 
-module.exports = deleteUser;
+const deleteUserByUser = async (req, res) => {
+try {
+  const username = req.username;
+
+  const  user = await fsql.getallUsername(username);
+  if(!user){
+    return res.status(404).json({message: 'Usuario no encontrado'});
+  }
+
+  await fsql.delete_in_user(username);
+  return res.status(200).json({message: 'Usuario borrado'});
+
+} catch (error) {
+  console.error('Error al borrar incidencias', error);
+  return res.status(500).json({message: 'Error al borrar incidencias intentelo nuevamente'});
+}
+}
+
+
+
+
+
+
+module.exports = {deleteUser, deleteUserByUser};
