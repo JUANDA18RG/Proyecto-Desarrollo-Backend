@@ -24,7 +24,7 @@ const obtenerHistorialReservas = require('../controllers/Historeservas.js');
 const realizarComentario = require('../controllers/comentarios.js');
 const updateCommentAndRating = require('../controllers/EditComent-valoraciones.js');
 const {obtenerHistorialValoraciones,eliminarValoracion,} = require('../controllers/HistoValora.js');
-const deleteUser = require('../controllers/deleteUser.js');
+const {deleteUser, deleteUserByUser} = require('../controllers/deleteUser.js');
 const deleteB = require('../controllers/deleteBooks.js');
 const {return_usuarios, return_usuario}= require('../controllers/returnUsuarios.js');
 const {completeForm,verifyForm} = require('../controllers/completeFormAdmin.js');
@@ -91,5 +91,7 @@ router.delete('/BorrarLibros', userExtractor, deleteB);
 
 router.get('/returnUsuarios', return_usuarios);
 router.get('/returnUsuario/:username', return_usuario);
+
+router.delete('/deleteUserByUser', userExtractor, deleteUserByUser); // borrar usuario por el mismo usuario
 
 module.exports = {router, routerlogin, routerReserva, routerComentarios};
