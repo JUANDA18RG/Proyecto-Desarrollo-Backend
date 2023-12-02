@@ -30,6 +30,7 @@ const {return_usuarios, return_usuario}= require('../controllers/returnUsuarios.
 const {completeForm,verifyForm} = require('../controllers/completeFormAdmin.js');
 const administrador = require('../controllers/crearFormAdmin.js');
 const actualizarEstado = require('../controllers/editarReservaAdmin.js');
+const cancelarReserva = require('../controllers/cancelarReserva.js');
 
 
 
@@ -73,6 +74,7 @@ routerReserva.get('/:id', obtenerInfoReserva);
 
 // al  realizar estas peticion debes enviar tambien el token de autorizacion
 routerReserva.put('/EditarReserva',userExtractor, actualizarFechaDevolucion);
+routerReserva.put('/cancelarReserva/:id', userExtractor, cancelarReserva);
 
 
 // actualizar comentario y valoracion
