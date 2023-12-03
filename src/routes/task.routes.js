@@ -31,10 +31,20 @@ const {completeForm,verifyForm} = require('../controllers/completeFormAdmin.js')
 const administrador = require('../controllers/crearFormAdmin.js');
 const actualizarEstado = require('../controllers/editarReservaAdmin.js');
 const cancelarReserva = require('../controllers/cancelarReserva.js');
+const controllers = require('../controllers/updatelibro.js');
 
 
 
 
+
+// Ruta para obtener todos los libros
+router.get('/libros', controllers.getAllLibros);
+
+// Ruta para buscar un libro por ISBN
+router.get('/libros/:isbn', controllers.getLibroByISBN);
+
+// Ruta para actualizar un libro por ISBN
+router.put('/libros/:isbn', controllers.updateLibro);
 
 
 router.post('/register', register);
@@ -46,7 +56,6 @@ router.get('/historeservas/:usuario', obtenerHistorialReservas);
 router.get('/histovaloraciones/:usuario', obtenerHistorialValoraciones);
 router.delete('/valoraciones/:id', eliminarValoracion);
 router.post('/createUser', userExtractor, administrador);
-//router.get('/reservas', taskControllers.getAllReservas);
 router.put('/cambiarEstado/:id', userExtractor, actualizarEstado);
 
 
