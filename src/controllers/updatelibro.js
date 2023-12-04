@@ -1,4 +1,6 @@
 const db = require('../db.js');
+const fs = require('fs').promises;
+const path = require('path');
 
 // Controlador para obtener todos los libros
 async function getAllLibros(req, res) {
@@ -31,7 +33,7 @@ async function getLibroByISBN(req, res) {
 // Controlador para actualizar un libro por ISBN
 async function updateLibro(req, res) {
   const isbn = req.params.isbn;
-  const { titulo, autor, categoria, copiasDisponibles, sinopsis } = req.body;
+  const { titulo, autor, genero, copiasdisponibles, sinopsis, añopublicacion } = req.body;
 
   try {
     const libroExistente = await db.oneOrNone('SELECT * FROM libro WHERE isbn = $1', isbn);
@@ -39,18 +41,50 @@ async function updateLibro(req, res) {
       return res.status(404).json({ error: 'Libro no encontrado' });
     }
 
-    // Actualizar la información del libro en la base de datos
-    const updateQuery = `UPDATE libro
-                         SET titulo = COALESCE($2, titulo),
-                             autor = COALESCE($3, autor),
-                             genero = COALESCE($4, genero),
-                             copiasDisponibles = COALESCE($5, copiasDisponibles),
-                             sinopsis = COALESCE($6, sinopsis)
-                         WHERE isbn = $1`;
+    // Ruta donde se almacenan las imágenes de portada (ajústala según tu estructura)
+    const uploadPath = path.join(__dirname, '..', 'uploads');
 
-    await db.none(updateQuery, [isbn, titulo, autor, categoria, copiasDisponibles, sinopsis]);
+    // Verifica si se proporciona una nueva portada en la solicitud
+    if (req.file) {
+      // Elimina la portada anterior si existe
+      if (libroExistente.portada) {
+        const portadaPath = path.join(uploadPath, libroExistente.portada);
+        await fs.unlink(portadaPath);
+      }
 
-    res.json({ status: 'ok', message: 'Libro actualizado exitosamente' });
+      // Guarda la nueva portada en la carpeta de subidas
+      const nuevaPortadaPath = path.join(uploadPath, req.file.filename);
+      await fs.rename(req.file.path, nuevaPortadaPath);
+
+      // Actualiza la información del libro en la base de datos
+      const updateQuery = `UPDATE libro
+                           SET titulo = COALESCE($2, titulo),
+                               autor = COALESCE($3, autor),
+                               genero = COALESCE($4, genero),
+                               copiasdisponibles = COALESCE($5, copiasdisponibles),
+                               sinopsis = COALESCE($6, sinopsis),
+                               añopublicacion = COALESCE($7, añopublicacion),
+                               portada = COALESCE($8, portada)
+                           WHERE isbn = $1`;
+
+      await db.none(updateQuery, [isbn, titulo, autor, genero, copiasdisponibles, sinopsis, añopublicacion, req.file.filename]);
+
+      res.json({ status: 'ok', message: 'Libro actualizado exitosamente' });
+    } else {
+      // No se proporcionó una nueva portada, solo actualiza la información sin cambiar la portada
+      const updateQueryWithoutPortada = `UPDATE libro
+                                         SET titulo = COALESCE($2, titulo),
+                                             autor = COALESCE($3, autor),
+                                             genero = COALESCE($4, genero),
+                                             copiasdisponibles = COALESCE($5, copiasdisponibles),
+                                             sinopsis = COALESCE($6, sinopsis),
+                                             añopublicacion = COALESCE($7, añopublicacion)
+                                         WHERE isbn = $1`;
+
+      await db.none(updateQueryWithoutPortada, [isbn, titulo, autor, genero, copiasdisponibles, sinopsis, añopublicacion]);
+
+      res.json({ status: 'ok', message: 'Libro actualizado exitosamente' });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error al actualizar el libro' });
@@ -62,5 +96,3 @@ module.exports = {
   getLibroByISBN,
   updateLibro,
 };
-
-
