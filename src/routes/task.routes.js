@@ -19,7 +19,6 @@ const {searchByAuthor, searchByGenre, searchByTitleDifused, searchByAnioPublicac
 const obtenerInfoReserva = require('../controllers/infoReserva.js');
 const actualizarFechaDevolucion = require('../controllers/EditReserva.js');
 const booking = require('../controllers/bookings.js');
-//const { searchCombined } = require('../controllers/FiltroCombinado.js');
 const obtenerHistorialReservas = require('../controllers/Historeservas.js');
 const realizarComentario = require('../controllers/comentarios.js');
 const updateCommentAndRating = require('../controllers/EditComent-valoraciones.js');
@@ -32,9 +31,11 @@ const administrador = require('../controllers/crearFormAdmin.js');
 const actualizarEstado = require('../controllers/editarReservaAdmin.js');
 const cancelarReserva = require('../controllers/cancelarReserva.js');
 const controllers = require('../controllers/updatelibro.js');
+const libroController = require('../controllers/FiltroCombinado.js');
 
 
-
+// Ruta para filtrar libros de forma combinada
+router.post('/filtrarLibros', libroController.filtrarLibros);
 
 
 // Ruta para obtener todos los libros
@@ -66,7 +67,6 @@ router.post('/search/title',searchByTitleDifused);
 router.get('/genero/:genero',searchByGenre);
 router.get('/autor/:autor',searchByAuthor);
 router.get('/aniopublicacion/:aniopublicacion', searchByAnioPublicacion);
-router.post('/search/combined', searchCombined);
 router.post('/completarFormulario', userExtractor,completeForm);
 router.get('/completarFormulario', verifyForm);
 routerlogin.post('/api/login', loggin);
