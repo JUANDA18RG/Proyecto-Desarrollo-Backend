@@ -13,12 +13,16 @@ async function getAllLibros(req, res) {
   }
 }
 
-// Controlador para buscar un libro por Título
+// Controlador para buscar un libro por Título (insensible a mayúsculas/minúsculas y tildes)
 async function getLibroByTitulo(req, res) {
   const titulo = req.params.titulo;
 
   try {
-    const libro = await db.oneOrNone('SELECT * FROM libro WHERE titulo = $1', titulo);
+    const libro = await db.oneOrNone(`
+      SELECT *
+      FROM libro
+      WHERE titulo ILIKE $1`, `%${titulo}%`);
+
     if (!libro) {
       return res.status(404).json({ error: 'Libro no encontrado' });
     }
@@ -33,7 +37,7 @@ async function getLibroByTitulo(req, res) {
 // Controlador para actualizar un libro por ISBN
 async function updateLibro(req, res) {
   const isbn = req.params.isbn;
-  const { titulo, autor, genero, cantCopias, sinopsis, anioPublicacion } = req.body;
+  const { titulo, autor, genero, cantcopias, sinopsis, anioPublicacion } = req.body;
 
   try {
     const libroExistente = await db.oneOrNone('SELECT * FROM libro WHERE isbn = $1', isbn);
@@ -61,13 +65,13 @@ async function updateLibro(req, res) {
                            SET titulo = COALESCE($2, titulo),
                                autor = COALESCE($3, autor),
                                genero = COALESCE($4, genero),
-                               cantCopias = COALESCE($5, cantCopias),
+                               cantcopias = COALESCE($5, cantcopias),
                                sinopsis = COALESCE($6, sinopsis),
                                anioPublicacion = COALESCE($7, anioPublicacion),
                                portada = COALESCE($8, portada)
                            WHERE isbn = $1`;
 
-      await db.none(updateQuery, [isbn, titulo, autor, genero, cantCopias, sinopsis, anioPublicacion, req.file.filename]);
+      await db.none(updateQuery, [isbn, titulo, autor, genero, cantcopias, sinopsis, anioPublicacion, req.file.filename]);
 
       res.json({ status: 'ok', message: 'Libro actualizado exitosamente' });
     } else {
@@ -76,12 +80,12 @@ async function updateLibro(req, res) {
                                          SET titulo = COALESCE($2, titulo),
                                              autor = COALESCE($3, autor),
                                              genero = COALESCE($4, genero),
-                                             cantCopias = COALESCE($5, cantCopias),
+                                             cantcopias = COALESCE($5, cantcopias),
                                              sinopsis = COALESCE($6, sinopsis),
                                              anioPublicacion = COALESCE($7, anioPublicacion)
                                          WHERE isbn = $1`;
 
-      await db.none(updateQueryWithoutPortada, [isbn, titulo, autor, genero, cantCopias, sinopsis, anioPublicacion]);
+      await db.none(updateQueryWithoutPortada, [isbn, titulo, autor, genero, cantcopias, sinopsis, anioPublicacion]);
 
       res.json({ status: 'ok', message: 'Libro actualizado exitosamente' });
     }
