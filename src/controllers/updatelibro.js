@@ -67,7 +67,7 @@ async function updateLibro(req, res) {
                                portada = COALESCE($8, portada)
                            WHERE isbn = $1`;
 
-      await db.none(updateQuery, [isbn, titulo, autor, genero, copiasdisponibles, sinopsis, añopublicacion, req.file.filename]);
+      await db.none(updateQuery, [isbn, titulo, autor, genero, copiasdisponibles, sinopsis, aniopublicacion, req.file.filename]);
 
       res.json({ status: 'ok', message: 'Libro actualizado exitosamente' });
     } else {
@@ -78,10 +78,10 @@ async function updateLibro(req, res) {
                                              genero = COALESCE($4, genero),
                                              copiasdisponibles = COALESCE($5, copiasdisponibles),
                                              sinopsis = COALESCE($6, sinopsis),
-                                             añopublicacion = COALESCE($7, añopublicacion)
+                                             aniopublicacion = COALESCE($7, añopublicacion)
                                          WHERE isbn = $1`;
 
-      await db.none(updateQueryWithoutPortada, [isbn, titulo, autor, genero, copiasdisponibles, sinopsis, añopublicacion]);
+      await db.none(updateQueryWithoutPortada, [isbn, titulo, autor, genero, copiasdisponibles, sinopsis, aniopublicacion]);
 
       res.json({ status: 'ok', message: 'Libro actualizado exitosamente' });
     }
