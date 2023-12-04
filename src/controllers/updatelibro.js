@@ -13,12 +13,12 @@ async function getAllLibros(req, res) {
   }
 }
 
-// Controlador para buscar un libro por ISBN
-async function getLibroByISBN(req, res) {
-  const isbn = req.params.isbn;
+// Controlador para buscar un libro por Título
+async function getLibroByTitulo(req, res) {
+  const titulo = req.params.titulo;
 
   try {
-    const libro = await db.oneOrNone('SELECT * FROM libro WHERE isbn = $1', isbn);
+    const libro = await db.oneOrNone('SELECT * FROM libro WHERE titulo = $1', titulo);
     if (!libro) {
       return res.status(404).json({ error: 'Libro no encontrado' });
     }
@@ -26,7 +26,7 @@ async function getLibroByISBN(req, res) {
     res.json(libro);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error al buscar el libro por ISBN' });
+    res.status(500).json({ error: 'Error al buscar el libro por Título' });
   }
 }
 
@@ -93,6 +93,6 @@ async function updateLibro(req, res) {
 
 module.exports = {
   getAllLibros,
-  getLibroByISBN,
+  getLibroByTitulo,
   updateLibro,
 };

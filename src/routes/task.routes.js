@@ -42,7 +42,7 @@ router.post('/filtrarLibros', libroController.filtrarLibros);
 router.get('/libros', controllers.getAllLibros);
 
 // Ruta para buscar un libro por ISBN
-router.get('/libros/:isbn', controllers.getLibroByISBN);
+router.get('/libros/:titulo', controllers.getLibroByTitulo);
 
 // Ruta para actualizar un libro por ISBN
 router.put('/libros/:isbn', controllers.updateLibro);
