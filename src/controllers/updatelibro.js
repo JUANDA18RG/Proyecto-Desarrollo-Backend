@@ -33,7 +33,7 @@ async function getLibroByISBN(req, res) {
 // Controlador para actualizar un libro por ISBN
 async function updateLibro(req, res) {
   const isbn = req.params.isbn;
-  const { titulo, autor, genero, copiasdisponibles, sinopsis, añopublicacion } = req.body;
+  const { titulo, autor, genero, cantCopias, sinopsis, anioPublicacion } = req.body;
 
   try {
     const libroExistente = await db.oneOrNone('SELECT * FROM libro WHERE isbn = $1', isbn);
@@ -61,13 +61,13 @@ async function updateLibro(req, res) {
                            SET titulo = COALESCE($2, titulo),
                                autor = COALESCE($3, autor),
                                genero = COALESCE($4, genero),
-                               copiasdisponibles = COALESCE($5, copiasdisponibles),
+                               cantCopias = COALESCE($5, cantCopias),
                                sinopsis = COALESCE($6, sinopsis),
-                               añopublicacion = COALESCE($7, añopublicacion),
+                               anioPublicacion = COALESCE($7, anioPublicacion),
                                portada = COALESCE($8, portada)
                            WHERE isbn = $1`;
 
-      await db.none(updateQuery, [isbn, titulo, autor, genero, copiasdisponibles, sinopsis, aniopublicacion, req.file.filename]);
+      await db.none(updateQuery, [isbn, titulo, autor, genero, cantCopias, sinopsis, anioPublicacion, req.file.filename]);
 
       res.json({ status: 'ok', message: 'Libro actualizado exitosamente' });
     } else {
@@ -76,12 +76,12 @@ async function updateLibro(req, res) {
                                          SET titulo = COALESCE($2, titulo),
                                              autor = COALESCE($3, autor),
                                              genero = COALESCE($4, genero),
-                                             copiasdisponibles = COALESCE($5, copiasdisponibles),
+                                             cantCopias = COALESCE($5, cantCopias),
                                              sinopsis = COALESCE($6, sinopsis),
-                                             aniopublicacion = COALESCE($7, añopublicacion)
+                                             anioPublicacion = COALESCE($7, anioPublicacion)
                                          WHERE isbn = $1`;
 
-      await db.none(updateQueryWithoutPortada, [isbn, titulo, autor, genero, copiasdisponibles, sinopsis, aniopublicacion]);
+      await db.none(updateQueryWithoutPortada, [isbn, titulo, autor, genero, cantCopias, sinopsis, anioPublicacion]);
 
       res.json({ status: 'ok', message: 'Libro actualizado exitosamente' });
     }
