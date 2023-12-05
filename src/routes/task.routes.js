@@ -4,6 +4,7 @@ const routerlogin = express.Router();
 const loggin = require('../controllers/login.js');
 const routerReserva = express.Router();
 const routerComentarios = express.Router();
+const routerbook = express.Router();
 
 const router = express.Router();
 router.use(express.json());
@@ -30,9 +31,8 @@ const {return_usuarios, return_usuario}= require('../controllers/returnUsuarios.
 const {completeForm,verifyForm} = require('../controllers/completeFormAdmin.js');
 const administrador = require('../controllers/crearFormAdmin.js');
 const actualizarEstado = require('../controllers/editarReservaAdmin.js');
-
-
-
+const controlador = require('../controllers/uploadFiles.js');
+const createBook = require('../controllers/createBook.js');
 
 
 
@@ -92,4 +92,6 @@ router.get('/returnUsuario/:username', return_usuario);
 
 router.delete('/deleteUserByUser', userExtractor, deleteUserByUser); // borrar usuario por el mismo usuario
 
-module.exports = {router, routerlogin, routerReserva, routerComentarios};
+routerbook.post('/createBook', controlador.upload, controlador.uploadFile, userExtractor, createBook);
+
+module.exports = {router, routerlogin, routerReserva, routerComentarios, routerbook};

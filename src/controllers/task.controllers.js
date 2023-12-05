@@ -343,6 +343,16 @@ const cambiarEstadoReserva = async (idreserva, nuevoestado) => {
     }
 }
 
+const createBook = async (ISBN, Titulo, Autor, Genero,anioPublicacion, Cantcopias, sinopsis, portada) => {
+    try {
+        await db.none('INSERT INTO libro (isbn, titulo, autor, genero, anioPublicacion, cantCopias, copiasDisponibles, sinopsis, portada) VALUES ($1, $2, $3, $4 , $5, $6, $6, $7, $8)',
+                       [ISBN, Titulo, Autor, Genero, anioPublicacion, Cantcopias, sinopsis, portada]);
+    } catch (error) {
+        console.error('Error al crear el libro', error);
+        throw new Error(error.message);
+    }
+}
+
 
 // llamado a las funciones
 module.exports = {
@@ -367,5 +377,6 @@ module.exports = {
     delete_in_user,
     getallUsers,
     getUser,
-    cambiarEstadoReserva
+    cambiarEstadoReserva,
+    createBook
 }

@@ -27,6 +27,7 @@ app.use(router.router);
 app.use(router.routerlogin);
 app.use('/reserva', router.routerReserva);
 app.use('/comentarios', router.routerComentarios);
+app.use('/book', router.routerbook);
 
 app.use(handlerError);
 
