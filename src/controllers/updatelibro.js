@@ -36,10 +36,11 @@ async function getLibroByTitulo(req, res) {
     res.status(500).json({ error: 'Error al buscar el libro por Título' });
   }
 }
+
 // Controlador para actualizar un libro por ISBN
 async function updateLibro(req, res) {
   const isbn = req.params.isbn;
-  const { titulo, autor, genero, cantcopias, sinopsis, anioPublicacion } = req.body;
+  const { titulo, autor, genero, cantcopias, sinopsis, aniopublicacion } = req.body;
 
   try {
     const libroExistente = await db.oneOrNone('SELECT * FROM libro WHERE isbn = $1', isbn);
@@ -71,7 +72,7 @@ async function updateLibro(req, res) {
           genero = COALESCE($4, genero),
           cantcopias = COALESCE($5, cantcopias),
           sinopsis = COALESCE($6, sinopsis),
-          anioPublicacion = COALESCE($7, anioPublicacion),
+          aniopublicacion = COALESCE($7, aniopublicacion),
           portada = COALESCE($8, portada),
           copiasdisponibles = $9
       WHERE isbn = $1`;
@@ -79,7 +80,7 @@ async function updateLibro(req, res) {
     // Usa null si req.file.filename no está definido
     const filename = req.file ? req.file.filename : null;
 
-    await db.none(updateQuery, [isbn, titulo, autor, genero, cantcopias, sinopsis, anioPublicacion, filename, nuevasCopiasDisponibles]);
+    await db.none(updateQuery, [isbn, titulo, autor, genero, cantcopias, sinopsis, aniopublicacion, filename, nuevasCopiasDisponibles]);
 
     res.json({ status: 'ok', message: 'Libro actualizado exitosamente' });
   } catch (error) {
@@ -87,7 +88,6 @@ async function updateLibro(req, res) {
     res.status(500).json({ error: 'Error al actualizar el libro' });
   }
 }
-
 
 module.exports = {
   getAllLibros,
