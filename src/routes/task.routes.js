@@ -20,7 +20,6 @@ const {searchByAuthor, searchByGenre, searchByTitleDifused, searchByAnioPublicac
 const obtenerInfoReserva = require('../controllers/infoReserva.js');
 const actualizarFechaDevolucion = require('../controllers/EditReserva.js');
 const booking = require('../controllers/bookings.js');
-//const { searchCombined } = require('../controllers/FiltroCombinado.js');
 const obtenerHistorialReservas = require('../controllers/Historeservas.js');
 const realizarComentario = require('../controllers/comentarios.js');
 const updateCommentAndRating = require('../controllers/EditComent-valoraciones.js');
@@ -31,6 +30,23 @@ const {return_usuarios, return_usuario}= require('../controllers/returnUsuarios.
 const {completeForm,verifyForm} = require('../controllers/completeFormAdmin.js');
 const administrador = require('../controllers/crearFormAdmin.js');
 const actualizarEstado = require('../controllers/editarReservaAdmin.js');
+const cancelarReserva = require('../controllers/cancelarReserva.js');
+const controllers = require('../controllers/updatelibro.js');
+const libroController = require('../controllers/FiltroCombinado.js');
+
+
+// Ruta para filtrar libros de forma combinada
+router.post('/filtrarLibros', libroController.filtrarLibros);
+
+
+// Ruta para obtener todos los libros
+router.get('/libros', controllers.getAllLibros);
+
+// Ruta para buscar un libro por ISBN
+router.get('/libros/:titulo', controllers.getLibroByTitulo);
+
+// Ruta para actualizar un libro por ISBN
+router.put('/libros/:isbn', controllers.updateLibro);
 const controlador = require('../controllers/uploadFiles.js');
 const createBook = require('../controllers/createBook.js');
 
@@ -45,7 +61,6 @@ router.get('/historeservas/:usuario', obtenerHistorialReservas);
 router.get('/histovaloraciones/:usuario', obtenerHistorialValoraciones);
 router.delete('/valoraciones/:id', eliminarValoracion);
 router.post('/createUser', userExtractor, administrador);
-//router.get('/reservas', taskControllers.getAllReservas);
 router.put('/cambiarEstado/:id', userExtractor, actualizarEstado);
 
 
@@ -56,7 +71,6 @@ router.post('/search/title',searchByTitleDifused);
 router.get('/genero/:genero',searchByGenre);
 router.get('/autor/:autor',searchByAuthor);
 router.get('/aniopublicacion/:aniopublicacion', searchByAnioPublicacion);
-router.post('/search/combined', searchCombined);
 router.post('/completarFormulario', userExtractor,completeForm);
 router.get('/completarFormulario', verifyForm);
 routerlogin.post('/api/login', loggin);
@@ -73,6 +87,7 @@ routerReserva.get('/:id', obtenerInfoReserva);
 
 // al  realizar estas peticion debes enviar tambien el token de autorizacion
 routerReserva.put('/EditarReserva',userExtractor, actualizarFechaDevolucion);
+routerReserva.put('/cancelarReserva/:id', userExtractor, cancelarReserva);
 
 
 // actualizar comentario y valoracion
