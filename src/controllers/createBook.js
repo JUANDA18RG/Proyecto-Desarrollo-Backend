@@ -47,8 +47,9 @@ const createbook = async (req, res) => {
             await deleteImage(req.file.path);
             return res.status(400).send({message: 'no hay copias para ingresar el libro a la biblioteca'});
         }
+        const portada = `/${req.file.filename}`;
 
-        await psql.createBook(ISBN, Titulo, Autor, Genero, anioPublicacion, Cantcopias, descripcion, req.file.filename);
+        await psql.createBook(ISBN, Titulo, Autor, Genero, anioPublicacion, Cantcopias, descripcion, portada);
 
         return res.status(201).send({message: `libro ${Titulo} creado exitosamente`});
 
