@@ -47,10 +47,12 @@ router.get('/libros/:titulo', controllers.getLibroByTitulo);
 
 // Ruta para actualizar un libro por ISBN
 router.put('/libros/:isbn', controllers.updateLibro);
+// para crear libros
 const controlador = require('../controllers/uploadFiles.js');
 const createBook = require('../controllers/createBook.js');
 
-
+// para la verificación
+const verificacionUser = require('../controllers/verifyDeleteUser.js');
 
 router.post('/register', register);
 router.put('/updateUser/:username',userExtractor, updateController.updateUserData);
@@ -107,6 +109,9 @@ router.get('/returnUsuario/:username', return_usuario);
 
 router.delete('/deleteUserByUser', userExtractor, deleteUserByUser); // borrar usuario por el mismo usuario
 
-routerbook.post('/createBook', controlador.upload, controlador.uploadFile, userExtractor, createBook);
+routerbook.post('/createBook',userExtractor, controlador.upload, controlador.uploadFile, createBook);
+
+// ruta para verificar si el usuario no ha sido eliminado por administrador
+router.get('/verificarUsuario', userExtractor, verificacionUser);
 
 module.exports = {router, routerlogin, routerReserva, routerComentarios, routerbook};

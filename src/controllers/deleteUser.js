@@ -38,6 +38,16 @@ try {
     return res.status(404).json({message: 'Usuario no encontrado'});
   }
 
+  const reservasActivas = await fsql.getReservasActivas(username);
+  if(reservasActivas.length > 0){
+
+    const mensaje = `No puedes eliminar tu cuenta de usuario porque tienes ${reservasActivas.length} reservas activas.`
+                    + `\nel nombre de los libros reservados que debe cancelar o entregar son: \n`
+                    + `${reservasActivas.map(reserva => reservasActivas.titulo).join('\n')}`;
+
+    return res.status(403).json({message: mensaje});
+  }
+
   await fsql.delete_in_user(username);
   return res.status(200).json({message: 'Usuario borrado'});
 
