@@ -27,7 +27,7 @@ async function filtrarLibros(req, res) {
     }
 
     if (añoPublicacion) {
-      query += ` AND "añoPublicacion" = ${añoPublicacion}`;
+      query += ` AND "aniopublicacion" = ${añoPublicacion}`;
     }
 
     if (fechaPublicacion) {
@@ -37,7 +37,6 @@ async function filtrarLibros(req, res) {
     if (diaPublicacion) {
       query += ` AND EXTRACT(DOW FROM "fechaPublicacion") = ${diaPublicacion}`;
     }
-
     // Ejecutar la consulta
     const librosFiltrados = await db.any(query);
 
