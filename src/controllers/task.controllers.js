@@ -357,7 +357,7 @@ const getReservasActivas = async (username) => {
     try {
         const reservas = await db.any('select r.id,l.titulo' 
                                     + ' from reserva r inner join libro l on r.libro = l.isbn '
-                                    + ' where r.usuario = $1 and r.estado in ($2, $3) ', [username, 'Reservado', 'Entregado']);
+                                    + ' where r.usuario = $1 and r.estado in ($2, $3, $4) ', [username, 'Reservado', 'Entregado', 'Vencido']);
         return reservas;
     } catch (error) {
         console.error('Error al obtener las reservas activas', error);
