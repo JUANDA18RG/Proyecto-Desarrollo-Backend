@@ -15,7 +15,7 @@ const verificacionUser = async (req, res) => {
         }catch(error){
         console.error('Error al verificar usuario', error);
         return res.status(500).json({message: 'Error al verificar usuario por favor ingrese de nuevo',
-                                    cierreSesion: false});
+                                    cierreSesion: true});
         }
     }
 
