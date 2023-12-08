@@ -12,8 +12,10 @@ const booksdata = async (request, response) => {
                     error: 'No se encontró un libro con el id ' + request.params.id
                 });
             }
+            const val = await fsql.getpromedioValoracion(request.params.id);
+            const valoracion = val.valoracion;
             // Devuelve los detalles del libro
-            return response.status(200).send(createBookSummary(book));
+            return response.status(200).send(createBookSummary(book,valoracion));
         }
         // Si no se proporcionó un ID, devuelve un resumen de todos los libros
         const bookSummary = books.map(createBookSummary);
@@ -26,7 +28,7 @@ const booksdata = async (request, response) => {
     }
 }
 
-function createBookSummary(book) {
+function createBookSummary(book,valoracion) {
     // Lista de propiedades requeridas
     const requiredProperties = ['isbn', 'titulo', 'autor', 'portada', 'copiasdisponibles', 'cantcopias', 'aniopublicacion'];
 
@@ -43,7 +45,7 @@ function createBookSummary(book) {
         Total: book.cantcopias || 0,
         year: book.aniopublicacion || 'Año de publicación desconocido',
         categoria: book.genero || 'Categoría no especificada',
-        valoracion: book.valoracion || 0,
+        valoracion: parseFloat(valoracion || 1).toFixed(1),
     };
 
     return bookSummary;

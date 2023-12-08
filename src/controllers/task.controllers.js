@@ -368,12 +368,30 @@ const getReservasActivas = async (username) => {
 const getAllBooksWithValoracion = async () => {
 
     try{
-        const libros = await db.any('SELECT * FROM libro');
+        const libros = await db.any('select l.isbn, l.titulo, l.autor, l.estado, l.tendencia, l.genero, l.anioPublicacion, l.cantReservas, l.copiasDisponibles,'
+                                + ' (l.cantCopias - l.copiasDisponibles) as copiasReservadas, l.portada, avg(v.valoracion) as valoracion '
+                                +' from libro l left join valoraciones v on l.isbn = v.libro '
+                                +' group by l.isbn, l.titulo, l.autor, l.estado, l.tendencia, l.genero, l.anioPublicacion, l.cantReservas, l.copiasDisponibles,'
+                                +' (l.cantCopias - l.copiasDisponibles)');
+        return libros;
 
     }catch(error){
-
+        console.error(error.message);
+        throw new Error(error.message);
     }
 
+}
+
+const getpromedioValoracion = async (isbn) => {
+    try {
+        const valoracion = await db.oneOrNone('select avg(v.valoracion) as valoracion'
+                                            +' from libro l left join valoraciones v on l.isbn = v.libro '
+                                            + 'where l.isbn = $1', [isbn]);
+        return valoracion;
+    } catch (error) {
+        console.error('Error al obtener la valoracion', error);
+        throw new Error(error.message);
+    }
 }
 
 
@@ -403,5 +421,7 @@ module.exports = {
     getUser,
     cambiarEstadoReserva,
     createBook,
-    getReservasActivas
+    getReservasActivas,
+    getAllBooksWithValoracion,
+    getpromedioValoracion
 }
