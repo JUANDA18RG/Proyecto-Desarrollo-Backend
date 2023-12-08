@@ -41,9 +41,9 @@ try {
   const reservasActivas = await fsql.getReservasActivas(username);
   if(reservasActivas.length > 0){
 
-    const mensaje = `No puedes eliminar tu cuenta de usuario porque tienes ${reservasActivas.length} reservas activas.`
+    const mensaje = `No puedes eliminar tu cuenta de usuario porque tienes ${reservasActivas.length} reservas activas. `
                     + `\nel nombre de los libros reservados que debe cancelar o entregar son: \n`
-                    + `${reservasActivas.map(reserva => reservasActivas.titulo).join('\n')}`;
+                    + `${reservasActivas.map(reserva => reservasActivas.titulo).join(', ')}`;
 
     return res.status(403).json({message: mensaje});
   }
