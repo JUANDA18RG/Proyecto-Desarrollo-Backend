@@ -43,7 +43,7 @@ try {
 
     const mensaje = `No puedes eliminar tu cuenta de usuario porque tienes ${reservasActivas.length} reservas activas. `
                     + `\nel nombre de los libros reservados que debe cancelar o entregar son: \n`
-                    + `${reservasActivas.map(reserva => reserva.titulo).join('\n')}`;
+                    + `${reservasActivas.map(reserva => reserva.titulo).join(', ')}`;
 
     return res.status(403).json({message: mensaje});
   }
