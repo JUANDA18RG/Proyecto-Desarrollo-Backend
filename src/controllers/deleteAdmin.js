@@ -53,4 +53,23 @@ const getAdmin = async (req, res) =>
     }
 }
 
-module.exports = {deleteAdmin,getAdmin};
+async function return_administrador(req, res) {
+    try{
+        const username = req.params.username;
+        const Administrador = await fsql.getAdmin(username);
+        if(Administrador){
+            return res.status(200).json(Administrador);
+        }
+        return res.status(404).json({message: 'No se encontró el usuario'});
+
+    }catch(error){
+        console.error('Error al buscar Administrador ', error);
+        return res.status(500).json({message: 'Error al buscar administrador'});
+    }
+}
+
+
+
+
+
+module.exports = {deleteAdmin,getAdmin, return_administrador};
