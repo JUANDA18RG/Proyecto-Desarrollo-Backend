@@ -33,7 +33,7 @@ const actualizarEstado = require('../controllers/editarReservaAdmin.js');
 const cancelarReserva = require('../controllers/cancelarReserva.js');
 const controllers = require('../controllers/updatelibro.js');
 const libroController = require('../controllers/FiltroCombinado.js');
-const {deleteAdmin} = require('../controllers/deleteAdmin.js');
+const {deleteAdmin, getAdmin} = require('../controllers/deleteAdmin.js');
 
 
 
@@ -116,5 +116,5 @@ routerbook.post('/createBook',userExtractor, controlador.upload, controlador.upl
 
 // ruta para verificar si el usuario no ha sido eliminado por administrador
 router.get('/verificarUsuario', userExtractor, verificacionUser);
-
+router.get('/administradores', getAdmin);
 module.exports = {router, routerlogin, routerReserva, routerComentarios, routerbook};

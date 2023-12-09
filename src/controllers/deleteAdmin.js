@@ -1,4 +1,5 @@
 const fsql = require('./task.controllers');
+const db = require('../db.js');
 
 const deleteAdmin = async (req, res) => 
 {
@@ -37,4 +38,19 @@ const deleteAdmin = async (req, res) =>
     }
 }
 
-module.exports = {deleteAdmin};
+
+const getAdmin = async (req, res) => 
+{
+    try
+    {
+        const lista = await fsql.getallAdmin();
+        return res.status(200).json(lista);
+    }
+    catch(err)
+    {
+        console.error('Error al traer los administradores', err);
+        return res.status(500)
+    }
+}
+
+module.exports = {deleteAdmin,getAdmin};

@@ -412,6 +412,19 @@ const deleteAdmin = async (username) =>
     
 }
 
+async function getallAdmin(){
+    try
+    {
+        const admins = await db.any('SELECT * FROM administrador WHERE jefe is not null');
+        return admins;
+    }
+    catch(error)
+    {
+        console.error('Error al obtener los administradores', error);
+        throw error;
+    }
+}
+
 
 
 // llamado a las funciones
@@ -442,5 +455,6 @@ module.exports = {
     getReservasActivas,
     getAllBooksWithValoracion,
     getpromedioValoracion,
-    deleteAdmin
+    deleteAdmin,
+    getallAdmin
 }
