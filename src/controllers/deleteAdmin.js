@@ -7,6 +7,7 @@ const deleteAdmin = async (req, res) =>
         const user = await fsql.getUserByCorreo(req.correo); // username de superadmin
         const admin_to_delete = req.params.username; //username de admin a ser eliminado
         const admin = await fsql.getUserByUsername(admin_to_delete); 
+        console.log(admin);
 
 
         if (!user)
