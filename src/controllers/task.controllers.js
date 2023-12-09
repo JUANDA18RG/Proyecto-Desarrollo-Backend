@@ -425,6 +425,21 @@ async function getallAdmin(){
     }
 }
 
+
+const getAdmin = async (username) => 
+{
+    try
+    {
+        const admin = await db.oneOrNone('SELECT * FROM administrador WHERE username = $1 and jefe is not null', [username]);
+        return admin;
+    }
+    catch(error)
+    {
+        console.error('Error al obtener el administrador', error);
+        throw error;
+    }
+}
+
 async function agregarControlLibro(libro, administrador){
     try
     {
@@ -481,5 +496,6 @@ module.exports = {
     deleteAdmin,
     getallAdmin,
     agregarControlLibro,
-    agregarControlReserva
+    agregarControlReserva,
+    getAdmin
 }
