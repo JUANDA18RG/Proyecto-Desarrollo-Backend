@@ -20,9 +20,6 @@ app.use(express.static('src/assets'));
 app.set('port', process.env.PORT || 4000);
 
 app.use(express.json());
-app.use(cors({
-  origin: 'http://localhost:5173' // solo permite recibir de esta funcion
-}));
 app.use(router.router);
 app.use(router.routerlogin);
 app.use('/reserva', router.routerReserva);
