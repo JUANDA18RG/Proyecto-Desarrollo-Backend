@@ -1,4 +1,5 @@
 const db = require('../db.js');
+const fsql = require('./task.controllers.js');
 const fs = require('fs').promises;
 const path = require('path');
 
@@ -39,10 +40,10 @@ async function getLibroByTitulo(req, res) {
 
 // Controlador para actualizar un libro por ISBN
 async function updateLibro(req, res) {
-  const isbn = req.params.isbn;
-  const { titulo, autor, genero, cantcopias, sinopsis, aniopublicacion } = req.body;
-
   try {
+    const isbn = req.params.isbn;
+    const admin = req.username;
+    const { titulo, autor, genero, cantcopias, sinopsis, aniopublicacion } = req.body;
     const libroExistente = await db.oneOrNone('SELECT * FROM libro WHERE isbn = $1', isbn);
     if (!libroExistente) {
       return res.status(404).json({ error: 'Libro no encontrado' });
@@ -81,7 +82,8 @@ async function updateLibro(req, res) {
     const filename = req.file ? req.file.filename : null;
 
     await db.none(updateQuery, [isbn, titulo, autor, genero, cantcopias, sinopsis, aniopublicacion, filename, nuevasCopiasDisponibles]);
-
+    await fsql.agregarControlLibro(isbn,admin);
+    
     res.json({ status: 'ok', message: 'Libro actualizado exitosamente' });
   } catch (error) {
     console.error(error);

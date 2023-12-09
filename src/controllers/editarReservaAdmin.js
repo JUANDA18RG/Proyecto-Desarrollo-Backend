@@ -1,5 +1,5 @@
 // Ruta para cambiar el estado de una reserva
-const {cambiarEstadoReserva, getUserByCorreo,getReservaById}= require('./task.controllers.js');
+const {cambiarEstadoReserva, getUserByCorreo,getReservaById, agregarControlReserva}= require('./task.controllers.js');
 
 
 async function actualizarEstado (req, res)
@@ -9,9 +9,14 @@ async function actualizarEstado (req, res)
   {
     const {nuevoEstado } = req.body;
     const id = req.params.id;
+    const usuario = req.username;
     const correo = req.correo;
     const reserva = await getReservaById(id);
     const isAdmin = await getUserByCorreo(correo);
+
+
+    console.log(usuario);
+    console.log(reserva);
 
     if (isAdmin == null)
     {
@@ -39,6 +44,7 @@ async function actualizarEstado (req, res)
 
     if(cambio)
     {
+      await agregarControlReserva(reserva.id,usuario);
       return res.status(200).json({ message: 'Cambio exitoso', nuevoEstado });
     }
     else

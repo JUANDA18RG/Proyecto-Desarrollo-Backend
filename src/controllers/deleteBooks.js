@@ -36,11 +36,11 @@ async function deleteB(req,res)
 
 
         await db.none('UPDATE reserva SET libro = null WHERE libro in ($1)',[book]);
-        await db.none('UPDATE valoraciones SET libro = null WHERE libro in ($1)',[book]);
+        await db.none('UPDATE valoraciones SET libro = null WHERE libro in ($1)',[book]);   
+
         const rutaAs = __dirname.replace('\controllers', '\assets');
         const ruta = path.join(rutaAs, nombreImagen);
-
-        
+             
         if (fs.existsSync(ruta))
         {
             await fs.unlink(ruta, (err) => 
@@ -61,7 +61,7 @@ async function deleteB(req,res)
 
         await db.none('DELETE FROM libro WHERE isbn in ($1)', [book])
         .then(resultado =>
-            {
+            {   
                 return res.status(200).send({message: "El libro ha sido eliminado correctamente."});
             })
         .catch(error => 

@@ -48,7 +48,7 @@ router.get('/libros', controllers.getAllLibros);
 router.get('/libros/:titulo', controllers.getLibroByTitulo);
 
 // Ruta para actualizar un libro por ISBN
-router.put('/libros/:isbn', controllers.updateLibro);
+router.put('/libros/:isbn', userExtractor,controllers.updateLibro);
 // para crear libros
 const controlador = require('../controllers/uploadFiles.js');
 const createBook = require('../controllers/createBook.js');

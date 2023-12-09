@@ -425,7 +425,30 @@ async function getallAdmin(){
     }
 }
 
+async function agregarControlLibro(libro, administrador){
+    try
+    {
+        await db.none('INSERT INTO editarlibro (libro,administrador) VALUES ($1,$2)',[libro,administrador]); 
+    }
+    catch(error)
+    {
+        console.error(error);
+        throw error;
+    }
+}
 
+async function agregarControlReserva(reserva, administrador)
+{
+    try
+    {
+        await db.none('INSERT INTO cambiarreserva (reserva,administrador) VALUES ($1,$2)',[reserva,administrador]); 
+    }
+    catch(error)
+    {
+        console.error(error);
+        throw error;
+    }
+}
 
 // llamado a las funciones
 module.exports = {
@@ -456,5 +479,7 @@ module.exports = {
     getAllBooksWithValoracion,
     getpromedioValoracion,
     deleteAdmin,
-    getallAdmin
+    getallAdmin,
+    agregarControlLibro,
+    agregarControlReserva
 }
