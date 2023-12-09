@@ -1,4 +1,6 @@
 const db = require('../db.js');
+const fs = require('fs');
+const path = require('path');
 const {getUserByCorreo, getBookByISBN} = require('./task.controllers.js');
 
 async function deleteB(req,res)
@@ -10,6 +12,7 @@ async function deleteB(req,res)
         book = req.body.book;
         const isAdmin = await getUserByCorreo(correo);
         const existBook = await getBookByISBN(book);
+        const nombreImagen = existBook.portada;
 
         if(isAdmin === null)
         {
@@ -29,15 +32,15 @@ async function deleteB(req,res)
         if(!(existBook.cantcopias == existBook.copiasdisponibles))
         {
             return res.status(400).send({message: 'El libro no puede ser borrado, por favor verifique que no hayan reservas antes de borrar un libro.'})
-        }
-
-        await db.none('UPDATE reserva SET libro = null WHERE libro in ($1)', [book])
-        await db.none('UPDATE valoraciones SET libro = null WHERE libro in ($1)',[book])
+        } 
 
 
-        const rutaAssets = __dirname.replace('\controllers', '\assets')
-        const ruta =  path.join(rutaAssets, nombreImagen);
+        await db.none('UPDATE reserva SET libro = null WHERE libro in ($1)',[book]);
+        await db.none('UPDATE valoraciones SET libro = null WHERE libro in ($1)',[book]);
+        const rutaAs = __dirname.replace('\controllers', '\assets');
+        const ruta = path.join(rutaAs, nombreImagen);
 
+        
         if (fs.existsSync(ruta))
         {
             await fs.unlink(ruta, (err) => 
@@ -72,4 +75,4 @@ async function deleteB(req,res)
     }
 }
 
-module.exports = deleteB;
+module.exports = {deleteB};

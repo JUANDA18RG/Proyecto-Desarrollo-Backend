@@ -25,7 +25,7 @@ const realizarComentario = require('../controllers/comentarios.js');
 const updateCommentAndRating = require('../controllers/EditComent-valoraciones.js');
 const {obtenerHistorialValoraciones,eliminarValoracion,} = require('../controllers/HistoValora.js');
 const {deleteUser, deleteUserByUser} = require('../controllers/deleteUser.js');
-const deleteB = require('../controllers/deleteBooks.js');
+const {deleteB} = require('../controllers/deleteBooks.js');
 const {return_usuarios, return_usuario}= require('../controllers/returnUsuarios.js');
 const {completeForm,verifyForm} = require('../controllers/completeFormAdmin.js');
 const administrador = require('../controllers/crearFormAdmin.js');
@@ -33,6 +33,8 @@ const actualizarEstado = require('../controllers/editarReservaAdmin.js');
 const cancelarReserva = require('../controllers/cancelarReserva.js');
 const controllers = require('../controllers/updatelibro.js');
 const libroController = require('../controllers/FiltroCombinado.js');
+const {deleteAdmin} = require('../controllers/deleteAdmin.js');
+
 
 
 // Ruta para filtrar libros de forma combinada
@@ -103,6 +105,7 @@ routerComentarios.get('/enviarComentarios', sendAllComments);
 
 router.delete('/deleteUser/:username', userExtractor, deleteUser);
 router.delete('/BorrarLibros', userExtractor, deleteB);
+router.delete('/eliminarAdmin/:username', userExtractor, deleteAdmin);
 
 router.get('/returnUsuarios', return_usuarios);
 router.get('/returnUsuario/:username', return_usuario);
