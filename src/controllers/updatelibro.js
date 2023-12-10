@@ -1,7 +1,7 @@
 const db = require('../db.js');
+const fsql = require('./task.controllers.js');
 const fs = require('fs').promises;
 const path = require('path');
-const fsql = require('./task.controllers.js');
 
 // Ruta donde se almacenan las imágenes de portada (ajústala según tu estructura)
 const uploadPath = path.join(__dirname, '..', 'assets');
@@ -45,6 +45,7 @@ async function getLibroByTitulo(req, res) {
 async function updateLibro(req, res) {
   const isbn = req.params.isbn;
   const correo = req.correo;
+  const admin = req.username;
   const { titulo, autor, genero, sinopsis} = req.body;
   let {aniopublicacion, cantcopias} = req.body;
   try {
@@ -117,7 +118,8 @@ async function updateLibro(req, res) {
     const filename = req.file ? `/${req.file.filename}` : null;
 
     await db.none(updateQuery, [isbn, titulo, autor, genero, cantcopias, sinopsis, aniopublicacion, filename, copiasDisponibles]);
-
+    await fsql.agregarControlLibro(isbn,admin);
+    
     if (req.file && req.file.filename) {
       // Elimina la portada anterior si existe
       if (libroExistente.portada) {

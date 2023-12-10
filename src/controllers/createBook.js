@@ -1,5 +1,5 @@
 const { throws } = require('assert');
-const psql = require('./task.controllers');
+const psql = require('./task.controllers.js');
 const fs = require('fs');
 
 const deleteImage = (path) => {
@@ -18,7 +18,6 @@ const createbook = async (req, res) => {
     try{
         const correo = req.correo;
         const isAdmin = await psql.getUserByCorreo(correo);
-        console.log(isAdmin[1]);
         if(!isAdmin[1]){
             await deleteImage(req.file.path);
             return res.status(403).send({message: 'No tienes permiso para realizar esta acción'});
@@ -51,8 +50,10 @@ const createbook = async (req, res) => {
 
         await psql.createBook(ISBN, Titulo, Autor, Genero, anioPublicacion, Cantcopias, descripcion, portada);
 
+        await psql.agregarControlLibro(ISBN,isAdmin[0].username);
+        
         return res.status(201).send({message: `libro ${Titulo} creado exitosamente`});
- c
+
     }catch(error){
         console.log(error);
         await deleteImage(req.file.path);

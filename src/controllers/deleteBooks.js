@@ -1,7 +1,7 @@
 const db = require('../db.js');
 const fs = require('fs');
 const path = require('path');
-const {getUserByCorreo, getBookByISBN} = require('./task.controllers.js');
+const {getUserByCorreo, getBookByISBN,agregarControlLibro} = require('./task.controllers.js');
 
 async function deleteB(req,res)
 {
@@ -35,39 +35,42 @@ async function deleteB(req,res)
         } 
 
 
-        await db.none('UPDATE reserva SET libro = null WHERE libro in ($1)',[book]);
-        await db.none('UPDATE valoraciones SET libro = null WHERE libro in ($1)',[book]);
-        const rutaAs = __dirname.replace('\controllers', '\assets');
-        const ruta = path.join(rutaAs, nombreImagen);
-
-        
-        if (fs.existsSync(ruta))
-        {
-            await fs.unlink(ruta, (err) => 
+        await db.tx(async t => {
+            await t.none('UPDATE reserva SET libro = null WHERE libro in ($1)',[book]);
+            await t.none('UPDATE valoraciones SET libro = null WHERE libro in ($1)',[book]);
+            await t.none('UPDATE editarlibro SET libro = null WHERE libro in ($1)',[book]);
+            
+            const rutaAs = __dirname.replace('\controllers', '\assets');
+            
+            const ruta = path.join(rutaAs, nombreImagen);
+             
+            if (fs.existsSync(ruta))
             {
-                if (err) 
+                await fs.unlink(ruta, (err) => 
                 {
-                    console.error('Error al eliminar el archivo:', err);
-                } 
-                else 
+                    if (err) 
+                    {
+                        console.error('Error al eliminar el archivo:', err);
+                    } 
+                    else 
+                    {
+                        console.log('Archivo eliminado con éxito.');
+                    }
+                });
+            } else 
+            {
+                console.log('El archivo no existe.');
+            }
+            await t.none('DELETE FROM libro WHERE isbn in ($1)', [book])
+            .then(resultado =>
+                {   
+                    return res.status(200).send({message: "El libro ha sido eliminado correctamente."});
+                })
+            .catch(error => 
                 {
-                    console.log('Archivo eliminado con éxito.');
-                }
-            });
-        } else 
-        {
-            console.log('El archivo no existe.');
-        }
-
-        await db.none('DELETE FROM libro WHERE isbn in ($1)', [book])
-        .then(resultado =>
-            {
-                return res.status(200).send({message: "El libro ha sido eliminado correctamente."});
-            })
-        .catch(error => 
-            {
-                return error;
-            });            
+                    return error;
+                }); 
+        });           
     }
     catch(error)
     {
