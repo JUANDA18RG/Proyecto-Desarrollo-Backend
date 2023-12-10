@@ -34,6 +34,7 @@ const cancelarReserva = require('../controllers/cancelarReserva.js');
 const controllers = require('../controllers/updatelibro.js');
 const libroController = require('../controllers/FiltroCombinado.js');
 const {deleteAdmin, getAdmin, return_administrador} = require('../controllers/deleteAdmin.js');
+const updateFiless = require('../controllers/UploadFileOptional.js');
 
 
 
@@ -47,8 +48,8 @@ router.get('/libros', controllers.getAllLibros);
 // Ruta para buscar un libro por ISBN
 router.get('/libros/:titulo', controllers.getLibroByTitulo);
 
-// Ruta para actualizar un libro por ISBN
-router.put('/libros/:isbn', controllers.updateLibro);
+// Ruta para actualizar un libro por ISBN------------------------------------
+router.put('/updateLibro/:isbn',updateFiless.optionalUpload, updateFiless.uploadFile, controllers.updateLibro);
 // para crear libros
 const controlador = require('../controllers/uploadFiles.js');
 const createBook = require('../controllers/createBook.js');
@@ -118,5 +119,7 @@ routerbook.post('/createBook',userExtractor, controlador.upload, controlador.upl
 router.get('/verificarUsuario', userExtractor, verificacionUser);
 router.get('/administradores', getAdmin);
 router.get('/returnAdministrador/:username', return_administrador);
+
+
 
 module.exports = {router, routerlogin, routerReserva, routerComentarios, routerbook};
