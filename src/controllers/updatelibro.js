@@ -50,13 +50,13 @@ async function updateLibro(req, res) {
   let {aniopublicacion, cantcopias} = req.body;
   try {
     // verificar que la persona tenga permisos de administrador
-    const admin = await fsql.getUserByCorreo(correo);
-    if(!admin){
-      return res.status(403).json({ error: 'No tienes permisos para realizar esta acción' });
+    const administrador = await fsql.getUserByCorreo(correo);
+    if(!administrador){
+      return res.status(403).json({ error: 'No tienes permisos para realizar esta acción el usuario no se encontró' });
     }
 
-    if(!admin[1]){
-      return res.status(403).json({ error: 'No tienes permisos para realizar esta acción' });
+    if(!administrador[1]){
+      return res.status(403).json({ error: 'No tienes permisos de administrador para realizar esta acción' });
     }
 
 
