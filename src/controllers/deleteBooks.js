@@ -7,7 +7,6 @@ async function deleteB(req,res)
 {
     try
     {
-        username = req.username;
         correo = req.correo;
         book = req.body.book;
         const isAdmin = await getUserByCorreo(correo);
@@ -38,8 +37,8 @@ async function deleteB(req,res)
         await db.tx(async t => {
             await t.none('UPDATE reserva SET libro = null WHERE libro in ($1)',[book]);
             await t.none('UPDATE valoraciones SET libro = null WHERE libro in ($1)',[book]);
-            await t.none('UPDATE editarlibro SET libro = null WHERE libro in ($1)',[book]);
             
+            await agregarControlLibro(existBook.isbn,isAdmin[0].username);
             const rutaAs = __dirname.replace('\controllers', '\assets');
             
             const ruta = path.join(rutaAs, nombreImagen);
@@ -61,6 +60,7 @@ async function deleteB(req,res)
             {
                 console.log('El archivo no existe.');
             }
+            await t.none('UPDATE editarlibro SET libro = null WHERE libro in ($1)',[book]);
             await t.none('DELETE FROM libro WHERE isbn in ($1)', [book])
             .then(resultado =>
                 {   
