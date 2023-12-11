@@ -128,7 +128,7 @@ async function updateLibro(req, res) {
       }
     }
 
-    res.json({ status: 'ok', message: 'Libro actualizado exitosamente' });
+    res.status(200).json({ status: 'ok', message: 'Libro actualizado exitosamente' });
   } catch (error) {
     console.error(error);
     try{
