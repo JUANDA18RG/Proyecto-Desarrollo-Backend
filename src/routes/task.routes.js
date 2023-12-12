@@ -35,8 +35,11 @@ const controllers = require('../controllers/updatelibro.js');
 const libroController = require('../controllers/FiltroCombinado.js');
 const {deleteAdmin, getAdmin, return_administrador} = require('../controllers/deleteAdmin.js');
 const updateFiless = require('../controllers/UploadFileOptional.js');
+const busquereservaController = require('../controllers/busquereserva');
 
 
+//busqueda reserva 
+router.get('/reservas', busquereservaController.listarReservas);
 
 // Ruta para filtrar libros de forma combinada
 router.post('/filtrarLibros', libroController.filtrarLibros);
