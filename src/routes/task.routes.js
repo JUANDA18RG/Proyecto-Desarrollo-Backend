@@ -40,6 +40,7 @@ const busquereservaController = require('../controllers/busquereserva');
 
 //busqueda reserva 
 router.get('/reservas', busquereservaController.listarReservas);
+router.get('/reservas/:id', busquereservaController.buscarReservaPorId);
 
 // Ruta para filtrar libros de forma combinada
 router.post('/filtrarLibros', libroController.filtrarLibros);
