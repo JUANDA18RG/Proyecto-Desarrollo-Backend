@@ -22,7 +22,7 @@ async function updateUserData(req, res) {
     updateFields.apellidos = apellidos;
   }
   if (password) {
-    const expresionContraseña = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[@#$%-^&+=!]).{8,}$/;
+    const expresionContraseña = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[@#$%*^&_+=!.-]).{8,}$/;
 
     //console.log(expresionContraseña.test(password));
     if (!expresionContraseña.test(password)) {
