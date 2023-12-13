@@ -335,7 +335,7 @@ const cambiarEstadoReserva = async (idreserva, isbn, nuevoestado) => {
     try 
     {
         await db.tx(async t => {
-        await t.none('UPDATE libro set copiasDisponibles = copiasDisponibles + 1  where id = $1', [isbn]);
+        await t.none('UPDATE libro set copiasDisponibles = copiasDisponibles + 1  where isbn = $1', [isbn]);
         await t.none('UPDATE reserva set estado = $1 where id = $2', [nuevoestado, idreserva]);
         });
         return true;
