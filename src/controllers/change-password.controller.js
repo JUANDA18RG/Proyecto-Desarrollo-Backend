@@ -12,6 +12,11 @@ const changePassword = async (req, res) => {
         message: "El usuario no existe",
       });
     }else{
+      const expresionContraseña = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[@#$%*-^&_+=!]).{8,}$/;
+      if (!(expresionContraseña.test(password)))
+      {
+        return res.status(400).send({status: 'contraseña no valida'});
+      } 
       const actualizar = await fslq.UpdatePassword(user[0].username, passwordHash);
       await fslq.deleteCodigo(user[0].username);
       if(!actualizar){
