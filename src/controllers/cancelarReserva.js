@@ -35,7 +35,7 @@ async function cancelarReserva (req, res)
             return res.status(400). send({message : 'La reserva no coincide con el usuario'});
         }
     
-        cambiarEstado = await cambiarEstadoReserva(reserva, 'Cancelado');
+        cambiarEstado = await cambiarEstadoReserva(reserva, bookingExist.libro, 'Cancelado');
         if(cambiarEstado)
         {
             return res.status(200). send({message : 'La reserva ha sido cancelada exitosamente'});
