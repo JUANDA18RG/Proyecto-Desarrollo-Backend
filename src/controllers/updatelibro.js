@@ -49,6 +49,22 @@ async function updateLibro(req, res) {
   const { titulo, autor, genero, sinopsis} = req.body;
   let {aniopublicacion, cantcopias} = req.body;
   try {
+
+    if (titulo === "") {
+      titulo = null;
+    }
+
+    if (autor === "") {
+      autor = null;
+    }
+
+    if (genero === "") {
+      genero = null;
+    }
+
+    if (sinopsis === "") {
+      sinopsis = null;
+    }
     // verificar que la persona tenga permisos de administrador
     const administrador = await fsql.getUserByCorreo(correo);
     if(!administrador){
